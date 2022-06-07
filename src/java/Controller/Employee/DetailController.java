@@ -3,25 +3,22 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Controller;
+package Controller.Employee;
 
-import Entity.Account;
-import Model.AccountDAO;
+import DAO.EmployeeDAO;
+import Model.Employee;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 /**
  *
- * @author Admin
+ * @author Long Thanh Pham
  */
-@WebServlet(name = "LoginController", urlPatterns = {"/login"})
-public class LoginController extends HttpServlet {
+public class DetailController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -34,47 +31,11 @@ public class LoginController extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            String u = request.getParameter("username");
-            String p = request.getParameter("password");
-            AccountDAO dao = new AccountDAO();
-            Account a = dao.getAccount(u, p);
-//            out.println(cus);
-            String service = request.getParameter("do");
-//            out.print(service);
-//            out.print("ok");
-
-            if (service == null) {
-                service = "logincus1";
-//                out.print("ok");
-            }
-            if (service.equals("logincus1")) {
-                out.print("ok1");
-                if (a == null) {
-                    String error = "username and password dont exsited";
-                    request.setAttribute("error", error);
-                    request.getRequestDispatcher("login.jsp").forward(request, response);
-                } else {
-                    if (a.getRole() == 1) {
-                        HttpSession session = request.getSession();
-                        session.setAttribute("account", a);
-                        session.setAttribute("nameacc", a.getUsername());
-//                        response.sendRedirect("HomeAdmin");
-                        response.sendRedirect("index.jsp");
-                    } else {
-                        HttpSession session = request.getSession();
-                        session.setAttribute("account", a);
-                        session.setAttribute("nameacc", a.getUsername());
-                        //      session.setAttribute("accid", a.getCustomerID());
-
-                        response.sendRedirect("HomeEmployee");
-
-                    }
-                }
-            }
-        }
+        String id = request.getParameter("id");
+        EmployeeDAO db = new EmployeeDAO();
+        Employee employee = db.getEmployee(id);
+        request.setAttribute("employee", employee);
+        request.getRequestDispatcher("../view/employee/detail.jsp").forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

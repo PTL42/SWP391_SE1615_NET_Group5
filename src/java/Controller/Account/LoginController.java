@@ -3,9 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Controller;
+package Controller.Account;
 
-import Model.AccountDAO;
+import Model.Account;
+import DAO.AccountDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -19,8 +20,8 @@ import javax.servlet.http.HttpSession;
  *
  * @author Admin
  */
-@WebServlet(name = "DraftController", urlPatterns = {"/draft"})
-public class DraftController extends HttpServlet {
+@WebServlet(name = "LoginController", urlPatterns = {"/login"})
+public class LoginController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -36,23 +37,43 @@ public class DraftController extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-               HttpSession session = request.getSession();
-             String pass = request.getParameter("confirm");
-             String user =(String) session.getAttribute("username");
-             out.print(user);
-             AccountDAO dao= new  AccountDAO();
-             int n=dao.ChangePassword(user, pass);
-             if(n>0){
-                 String mess=("Change password successfully");
-                 session.setAttribute("mess", mess);
-                 response.sendRedirect("draft.jsp");
-                 
-             }else{
-                 String mess=("Password change failed");
-                 session.setAttribute("mess", mess);
-                  response.sendRedirect("draft.jsp");
-             }
-             
+            String u = request.getParameter("username");
+            String p = request.getParameter("password");
+            AccountDAO dao = new AccountDAO();
+            Account a = dao.getAccount(u, p);
+//            out.println(cus);
+            String service = request.getParameter("do");
+//            out.print(service);
+//            out.print("ok");
+
+            if (service == null) {
+                service = "logincus1";
+//                out.print("ok");
+            }
+            if (service.equals("logincus1")) {
+                out.print("ok1");
+                if (a == null) {
+                    String error = "username and password dont exsited";
+                    request.setAttribute("error", error);
+                    request.getRequestDispatcher("login.jsp").forward(request, response);
+                } else {
+                    if (a.getRole() == 1) {
+                        HttpSession session = request.getSession();
+                        session.setAttribute("account", a);
+                        session.setAttribute("nameacc", a.getUsername());
+//                        response.sendRedirect("HomeAdmin");
+                        response.sendRedirect("index.jsp");
+                    } else {
+                        HttpSession session = request.getSession();
+                        session.setAttribute("account", a);
+                        session.setAttribute("nameacc", a.getUsername());
+                        //      session.setAttribute("accid", a.getCustomerID());
+
+                        response.sendRedirect("HomeEmployee");
+
+                    }
+                }
+            }
         }
     }
 

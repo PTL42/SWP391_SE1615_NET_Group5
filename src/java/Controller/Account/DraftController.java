@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Controller;
+package Controller.Account;
 
+import DAO.AccountDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -12,13 +13,14 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
  * @author Admin
  */
-@WebServlet(name = "CheckLoginController", urlPatterns = {"/checklogin"})
-public class CheckLoginController extends HttpServlet {
+@WebServlet(name = "DraftController", urlPatterns = {"/draft"})
+public class DraftController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -34,15 +36,23 @@ public class CheckLoginController extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet CheckLoginController</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet CheckLoginController at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+               HttpSession session = request.getSession();
+             String pass = request.getParameter("confirm");
+             String user =(String) session.getAttribute("username");
+             out.print(user);
+             AccountDAO dao= new  AccountDAO();
+             int n=dao.ChangePassword(user, pass);
+             if(n>0){
+                 String mess=("Change password successfully");
+                 session.setAttribute("mess", mess);
+                 response.sendRedirect("draft.jsp");
+                 
+             }else{
+                 String mess=("Password change failed");
+                 session.setAttribute("mess", mess);
+                  response.sendRedirect("draft.jsp");
+             }
+             
         }
     }
 

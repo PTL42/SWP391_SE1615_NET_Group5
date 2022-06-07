@@ -1,4 +1,4 @@
-package Model;
+package DAO;
 
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -7,8 +7,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import Entity.Cart;
-import Entity.Invoice;
+import Model.Cart;
+import Model.Invoice;
 
 public class InvoiceDAO extends ConnectDB {
 

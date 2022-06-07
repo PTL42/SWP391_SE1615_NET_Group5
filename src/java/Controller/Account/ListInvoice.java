@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Controller;
+package Controller.Account;
 
 import DAO.InvoiceDAO;
 import java.io.IOException;
@@ -19,7 +19,7 @@ import model.Invoice;
  *
  * @author SmileMint
  */
-public class SearchInvoice extends HttpServlet {
+public class ListInvoice extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -33,15 +33,14 @@ public class SearchInvoice extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String txtSearch = request.getParameter("txt");//lay tu o nguoi dung nhap
-        InvoiceDAO dao = new InvoiceDAO();
-
-        List<Invoice> list1 = dao.getInvoicebyInvoiceID(txtSearch);
-
+        
+        //get data from DAO
+        InvoiceDAO dao=new DAO.InvoiceDAO();
+        List<Invoice> list = dao.getAllInvoice();
+        
         //set date to jsp
-        request.setAttribute("listP", list1);
+        request.setAttribute("listP", list);
         request.getRequestDispatcher("List.jsp").forward(request, response);
-
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
