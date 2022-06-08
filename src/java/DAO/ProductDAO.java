@@ -6,14 +6,13 @@
 package DAO;
 
 import Model.CategoryDTO;
-import Model.DiscountDTO;
-import dtos.ProductDTO;
+import Model.ProductDTO;
 import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
-import uitils.DBUitils;
+import DAO.DBUitils;
 
 /**
  *

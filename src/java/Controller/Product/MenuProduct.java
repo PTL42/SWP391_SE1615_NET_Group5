@@ -6,13 +6,13 @@
 package Controller.Product;
 
 import DAO.CategoryDAO;
-import DAO.ProductDAO;
 import DAO.Define;
 import Model.CategoryDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -21,7 +21,8 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author ADMIN
  */
-public class DeleteProduct extends HttpServlet {
+@MultipartConfig
+public class MenuProduct extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -35,25 +36,31 @@ public class DeleteProduct extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String url = Define.SEARCH_PRODUCT_CONTROLLER;
-        int txtProductID = Integer.parseInt(request.getParameter("txtProductID"));
+        String url = Define.INDEX_PAGE;
         try {
-            ProductDAO productDAO = new ProductDAO();
-            boolean isSuccess = productDAO.deleteProduct(txtProductID);
-            if(isSuccess){
-                request.setAttribute("DELETE_PRODUCT", "Delete product successful");
-            }else{
-                request.setAttribute("DELETE_PRODUCT", "Delete product failed");
+            String action = request.getParameter("btnAction");
+            if (action != null && action != "") {
+                if (action.equals("Search Product")) {
+                    url = Define.SEARCH_PRODUCT_CONTROLLER;
+                } else if (action.equalsIgnoreCase("Go To Update Page") 
+                        || action.equalsIgnoreCase("Update Product")) {
+                    url = Define.UPDATE_PRODUCT_CONTROLLER;
+                } else if (action.equals("New Product")) {
+                    url = Define.ADD_PRODUCT_CONTROLLER;
+                } else if (action.equals("Delete Product")) {
+                    url = Define.DELETE_PRODUCT_CONTROLLER;
+                }
             }
-            
-            CategoryDAO categoryDAO = new CategoryDAO();
-            ArrayList<CategoryDTO> listCategory = categoryDAO.getAllCategory();
-            request.setAttribute("LIST_CATEGORY", listCategory);
+            if (url.equalsIgnoreCase(Define.INDEX_PAGE)) {
+                CategoryDAO categoryDAO = new CategoryDAO();
+                ArrayList<CategoryDTO> listCategory = categoryDAO.getAllCategory();
+                request.setAttribute("LIST_CATEGORY", listCategory);
+            }
         } catch (Exception e) {
-            log("Error at Delete Product Controller: "+e.getLocalizedMessage());
-            request.setAttribute("error", "Delete Product not work");
+            log("Error At MainController " + e.getLocalizedMessage());
+            request.setAttribute("error", e.getLocalizedMessage());
             url = Define.ERROR_PAGE;
-        }finally{
+        } finally {
             request.getRequestDispatcher(url).forward(request, response);
         }
     }
