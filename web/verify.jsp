@@ -75,8 +75,8 @@
         </div>
 
     </div>
-                                    <script>
-                                        var thoiluong=30;
+      <script>
+                                        var thoiluong=60;
 //                                  function  thoigian(x){
 //                                      x=30;
 //                                      thoiluong=x;
@@ -93,7 +93,7 @@
                                            
                                                 if(thoiluong<=0){
                                              thoiluong=0;
-                                        
+                                          document.getElementById("code").style.display="none";
                                            document.getElementById("hetgio").style.display="block";
                                            document.getElementById("sogiay").style.display="none";
                                            document.getElementById("sophut").style.display="none";
@@ -101,6 +101,7 @@
                                     },1000);
                                         
                                     </script>
+                                   
     <!-- Bootstrap core JavaScript-->
     <script src="vendor/jquery/jquery.min.js"></script>
     <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
