@@ -15,6 +15,25 @@ public class InvoiceDAO extends ConnectDB {
     PreparedStatement stm = null;
     ResultSet rs = null;
 
+    public ArrayList<Invoice> getAllInvoice() {
+        ArrayList<Invoice> list = new ArrayList<>();
+        String sql = "SELECT * FROM Invoice ";
+        try {
+            stm = conn.prepareStatement(sql);
+            rs = stm.executeQuery();
+            while (rs.next()) {
+                int invoiceID = rs.getInt("invoiceID");
+                Date createdDate = rs.getDate("createdDate");
+                int customerID = rs.getInt("customerID");
+                int employeeID = rs.getInt("employeeID");
+                list.add(new Invoice(invoiceID, createdDate, employeeID, customerID));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(InvoiceDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return list;
+    }
+    
     public ArrayList<Invoice> getListInvoiceByEmployeeID(int employeeID) {
         ArrayList<Invoice> list = new ArrayList<>();
         String sql = "SELECT * FROM Invoice WHERE employeeID = " + employeeID;

@@ -20,7 +20,10 @@
         <servlet-name>DetailController</servlet-name>
         <servlet-class>Controller.Employee.DetailController</servlet-class>
     </servlet>
-    
+    <servlet>
+        <servlet-name>AddController</servlet-name>
+        <servlet-class>CartController.AddController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ListController</servlet-name>
         <url-pattern>/employee/list</url-pattern>
@@ -60,6 +63,10 @@
     <servlet-mapping>
         <servlet-name>MenuProduct</servlet-name>
         <url-pattern>/product/menu</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddController</servlet-name>
+        <url-pattern>/cart/add</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

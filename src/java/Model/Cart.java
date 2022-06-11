@@ -6,15 +6,16 @@ public class Cart {
     private int productID; 
     private String productName;
     private int quantity;
+    private double price;
 
     public Cart() {
     }
 
-    public Cart(int productID, String productName, int quantity) {
+    public Cart(int productID, String productName, int quantity,double price) {
         this.productID = productID;
         this.productName = productName;
         this.quantity = quantity;
-
+        this.price = price;
     }
 
     public int getProductID() {
@@ -40,6 +41,14 @@ public class Cart {
     public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
-   
 
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+   
+    
 }

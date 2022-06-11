@@ -1,25 +1,24 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package Controller.Account;
+package CartController;
 
 import DAO.InvoiceDAO;
+import Model.Cart;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.List;
+import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import Model.Invoice;
 
 /**
  *
- * @author SmileMint
+ * @author The wizard and a cat
  */
-public class ListInvoice extends HttpServlet {
+public class AddController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -32,28 +31,29 @@ public class ListInvoice extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
+        InvoiceDAO dao = new InvoiceDAO();
+        ArrayList<Cart> cart = new ArrayList<>();
+
+        int invoiceID = (int) request.getAttribute("invoiceID");
+        int customerID = (int) request.getAttribute("invoiceID");
+        int employeeID = (int) request.getAttribute("invoiceID");
+        dao.addInvoice(invoiceID, customerID, employeeID, cart);
         
-        //get data from DAO
-        InvoiceDAO dao=new DAO.InvoiceDAO();
-        List<Invoice> list = dao.getAllInvoice();
-        
-        //set date to jsp
-        request.setAttribute("listP", list);
-        request.getRequestDispatcher("List.jsp").forward(request, response);
+        request.getRequestDispatcher("Cart.jsp").forward(request, response);
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+
+// <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+/**
+ * Handles the HTTP <code>GET</code> method.
+ *
+ * @param request servlet request
+ * @param response servlet response
+ * @throws ServletException if a servlet-specific error occurs
+ * @throws IOException if an I/O error occurs
+ */
+@Override
+protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
     }
@@ -67,7 +67,7 @@ public class ListInvoice extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
     }
@@ -78,7 +78,7 @@ public class ListInvoice extends HttpServlet {
      * @return a String containing servlet description
      */
     @Override
-    public String getServletInfo() {
+public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
 
