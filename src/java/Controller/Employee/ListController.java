@@ -32,19 +32,10 @@ public class ListController extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet ListController</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet ListController at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        }
+        EmployeeDAO edb = new EmployeeDAO();
+        ArrayList<Employee> employees = edb.getEmployees();
+        request.setAttribute("employees", employees);
+        request.getRequestDispatcher("../view/employee/list.jsp").forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -62,7 +53,7 @@ public class ListController extends HttpServlet {
         EmployeeDAO e = new EmployeeDAO();
         ArrayList<Employee> employees = e.getEmployees();
         request.setAttribute("employees", employees);
-        
+
 //         int pageSize = 10;
 //        
 //        String raw_page = request.getParameter("page");

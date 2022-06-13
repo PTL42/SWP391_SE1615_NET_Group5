@@ -6,8 +6,10 @@
 package Controller.Employee;
 
 import DAO.AccountDAO;
+import DAO.DepartmentDAO;
 import DAO.EmployeeDAO;
 import Model.Account;
+import Model.Department;
 import Model.Employee;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -33,22 +35,7 @@ public class InsertController extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet InsertController</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet InsertController at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        }
-    }
+ 
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
@@ -62,7 +49,11 @@ public class InsertController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.sendRedirect("../view/employee/insert.jsp");
+        DepartmentDAO db = new DepartmentDAO();
+        ArrayList<Department> depts = db.getDepartments();
+        request.setAttribute("depts", depts);
+
+        request.getRequestDispatcher("../view/employee/insert.jsp").forward(request, response);
     }
 
     /**
@@ -83,8 +74,9 @@ public class InsertController extends HttpServlet {
         e.setDob(Date.valueOf(request.getParameter("dob")));
         e.setPhone(request.getParameter("phone"));
         e.setSalary(Integer.parseInt(request.getParameter("salary")));
-        Account a = new Account();
-        a.setUsername(request.getParameter("username"));
+        Department d = new Department();
+        d.setId(request.getParameter("did"));
+        e.setDept(d);
         EmployeeDAO eDB = new EmployeeDAO();
         eDB.insert(e);
         response.sendRedirect("list");

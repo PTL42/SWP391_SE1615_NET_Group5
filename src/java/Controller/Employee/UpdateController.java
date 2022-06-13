@@ -5,8 +5,14 @@
  */
 package Controller.Employee;
 
+import DAO.DepartmentDAO;
+import DAO.EmployeeDAO;
+import Model.Department;
+import Model.Employee;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Date;
+import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -27,22 +33,7 @@ public class UpdateController extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet UpdateController</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet UpdateController at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        }
-    }
+
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
@@ -56,7 +47,16 @@ public class UpdateController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        String id = request.getParameter("id");
+        EmployeeDAO eDB = new EmployeeDAO();
+        Employee employee = eDB.getEmployee(id);
+        request.setAttribute("employee", employee);
+        
+        DepartmentDAO dDB = new DepartmentDAO();
+        ArrayList<Department> depts = dDB.getDepartments();
+        request.setAttribute("depts", depts);
+        
+        request.getRequestDispatcher("../view/employee/update.jsp").forward(request, response);
     }
 
     /**
@@ -70,7 +70,19 @@ public class UpdateController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        Employee e = new Employee();
+        e.setId(request.getParameter("id"));
+        e.setName(request.getParameter("name"));
+        e.setGender(request.getParameter("gender").equals("male"));
+        e.setDob(Date.valueOf(request.getParameter("dob")));
+        e.setPhone(request.getParameter("phone"));
+        e.setSalary(Integer.parseInt(request.getParameter("salary")));
+        Department d = new Department();
+        d.setId(request.getParameter("did"));
+        e.setDept(d);
+        EmployeeDAO eDB = new EmployeeDAO();
+        eDB.update(e);
+        response.sendRedirect("list");
     }
 
     /**

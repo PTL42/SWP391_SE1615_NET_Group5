@@ -13,13 +13,13 @@ import java.sql.Date;
  */
 public class Employee {
 
-    private String id;
-    private String name;
-    private boolean gender;
-    private Date dob;
-    private String phone;
-    private int salary;
-    private Account username;
+   private String id;
+   private String name;
+   private Date dob;
+   private boolean gender;
+   private String phone;
+   private int salary;
+   private Department dept;
 
     public String getId() {
         return id;
@@ -37,20 +37,20 @@ public class Employee {
         this.name = name;
     }
 
-    public boolean isGender() {
-        return gender;
-    }
-
-    public void setGender(boolean gender) {
-        this.gender = gender;
-    }
-
     public Date getDob() {
         return dob;
     }
 
     public void setDob(Date dob) {
         this.dob = dob;
+    }
+
+    public boolean isGender() {
+        return gender;
+    }
+
+    public void setGender(boolean gender) {
+        this.gender = gender;
     }
 
     public String getPhone() {
@@ -69,14 +69,15 @@ public class Employee {
         this.salary = salary;
     }
 
-    public Account getUsername() {
-        return username;
+    public Department getDept() {
+        return dept;
     }
 
-    public void setUsername(Account username) {
-        this.username = username;
+    public void setDept(Department dept) {
+        this.dept = dept;
     }
-    
-    
+
+   
+   
 
 }
