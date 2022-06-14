@@ -35,8 +35,6 @@ public class InsertController extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
- 
-
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -52,6 +50,7 @@ public class InsertController extends HttpServlet {
         DepartmentDAO db = new DepartmentDAO();
         ArrayList<Department> depts = db.getDepartments();
         request.setAttribute("depts", depts);
+
         request.getRequestDispatcher("../view/employee/insert.jsp").forward(request, response);
     }
 
@@ -67,7 +66,7 @@ public class InsertController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         Employee e = new Employee();
-        e.setId(request.getParameter("id"));
+        e.setId(request.getParameter("eid"));
         e.setName(request.getParameter("name"));
         e.setGender(request.getParameter("gender").equals("male"));
         e.setDob(Date.valueOf(request.getParameter("dob")));

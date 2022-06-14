@@ -30,7 +30,7 @@ public class DeleteController extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String eid = request.getParameter("eid");
+        String eid = request.getParameter("id");
         EmployeeDAO db = new EmployeeDAO();
         db.delete(eid);
         response.sendRedirect("list");

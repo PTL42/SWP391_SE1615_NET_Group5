@@ -19,11 +19,10 @@
         ID: <%=employee.getId()%><br/>
         Name: <%=employee.getName()%> <br/>
         Dob:<%=employee.getDob()%><br/>
-        Gender: <% if(employee.isGender()){%>
-                    <img src="../images/male-icon.png" alt="Male"/>
-                    <%} else {%>
-                    <img src="../images/female-icon.png" alt="Female"/>
-                    <%}%><br/>
+        Gender: <input type="checkbox" name="gender" 
+                           <%=employee.isGender() ? "checked=\"checked\"" : ""%> value="male"/>Male
+                    <input type="checkbox" name="gender" 
+                           <%=!employee.isGender() ? "checked=\"checked\"" : ""%> value="female"/>Female<br/>
         Phone <%=employee.getPhone()%><br/>
         Salary: <%=employee.getSalary()%><br/>
         Department: <%=employee.getDept().getName()%><br/>

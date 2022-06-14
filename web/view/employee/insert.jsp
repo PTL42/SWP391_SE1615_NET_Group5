@@ -18,6 +18,7 @@
     </head>
     <body>
         <form action="insert" method="POST">
+            EmployeeId: <input type="text" name="eid"/> <br/>
             Name: <input type="text" name="name"/> <br/>
             Gender: <input type="radio" checked="checked" name="gender" value="male"/> Male
             <input type="radio" name="gender" value="female"/> Female

@@ -156,6 +156,7 @@ public class EmployeeDAO extends ConnectDB {
                     + "      WHERE [eid] = ?";
             PreparedStatement stm = conn.prepareStatement(sql);
             stm.setString(1, id);
+            stm.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(EmployeeDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
