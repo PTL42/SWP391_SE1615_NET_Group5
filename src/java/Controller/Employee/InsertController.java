@@ -52,7 +52,6 @@ public class InsertController extends HttpServlet {
         DepartmentDAO db = new DepartmentDAO();
         ArrayList<Department> depts = db.getDepartments();
         request.setAttribute("depts", depts);
-
         request.getRequestDispatcher("../view/employee/insert.jsp").forward(request, response);
     }
 

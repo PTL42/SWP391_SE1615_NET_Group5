@@ -13,11 +13,11 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Insert Employee</title>
         <%
-        ArrayList<Department> depts = (ArrayList<Department>)request.getAttribute("depts");
+            ArrayList<Department> depts = (ArrayList<Department>) request.getAttribute("depts");
         %>
     </head>
     <body>
-       <form action="insert" method="POST">
+        <form action="insert" method="POST">
             Name: <input type="text" name="name"/> <br/>
             Gender: <input type="radio" checked="checked" name="gender" value="male"/> Male
             <input type="radio" name="gender" value="female"/> Female

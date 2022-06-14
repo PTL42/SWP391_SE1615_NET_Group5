@@ -34,35 +34,66 @@
         }
     </script>
     <body>
-        <table>
-            <tr>
-                <th>Id</th>
-                <th>Name</th>
-                <th>Gender</th>
-                <th>Date of Birth</th>
-                <th>Phone</th>
-                <th>Salary</th>
-                <th>Department</th>
-            </tr>
-            <%for (Employee e : employees) {
-            %>
-            <tr>
-                <td><%=e.getId()%></td>
-                <td><%=e.getName()%></td>
-                <td><% if (e.isGender()) {%>
-                    Male
-                    <%} else {%>
-                    Female
-                    <%}%>
-                </td>
-                <td><%=e.getDob()%></td>
-                <td><%=e.getPhone()%></td>
-                <td><%=e.getSalary()%></td>
-                <td><%=e.getDept().getName()%></td>
-                <td><input type="button" onclick="doUpdate(<%=e.getId()%>);" value="Update"/></td>
-                <td><input type="button" onclick="doDelete(<%=e.getId()%>);" value="Delete"/></td>
-            </tr>
-            <%}%>
-        </table>
+        <form action="HomeController" class="sign-in-form" method="POST">
+            <input type="hidden" name="do" value="ListEmployee">
+
+
+            <div class="row page-titles mx-0">
+                <div class="col p-md-0">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="javascript:void(0)">List Employee</a></li>
+                        <li class="breadcrumb-item active"><a href="javascript:void(0)">Home</a></li>
+                    </ol>
+                </div>
+            </div>
+            <!-- row -->
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title">ListEmployee</h4>
+                                <div class="table-responsive">
+                                    <table class="table table-striped table-bordered zero-configuration">
+                                        <thead>
+                                            <tr>
+                                                <th>Id</th>
+                                                <th>Name</th>
+                                                <th>Gender</th>
+                                                <th>Date of Birth</th>
+                                                <th>Phone</th>
+                                                <th>Salary</th>
+                                                <th>Department</th>                                               
+                                            </tr>
+                                        </thead>                                       
+                                        <%for (Employee e : employees) {
+                                        %>
+                                        <tr>
+                                            <td><%=e.getId()%></td>
+                                            <td><%=e.getName()%></td>
+                                            <td><% if (e.isGender()) {%>
+                                                Male
+                                                <%} else {%>
+                                                Female
+                                                <%}%>
+                                            </td>
+                                            <td><%=e.getDob()%></td>
+                                            <td><%=e.getPhone()%></td>
+                                            <td><%=e.getSalary()%></td>
+                                            <td><%=e.getDept().getName()%></td>
+                                            <td><input type="button" onclick="doUpdate(<%=e.getId()%>);" value="Update"/></td>
+                                            <td><input type="button" onclick="doDelete(<%=e.getId()%>);" value="Delete"/></td>
+                                        </tr>
+                                        <%}%>                                    
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- #/ container -->
+
+        </form>
     </body>
 </html>

@@ -50,9 +50,10 @@ public class ListController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        EmployeeDAO e = new EmployeeDAO();
-        ArrayList<Employee> employees = e.getEmployees();
-        request.setAttribute("employees", employees);
+        processRequest(request, response);
+//        EmployeeDAO e = new EmployeeDAO();
+//        ArrayList<Employee> employees = e.getEmployees();
+//        request.setAttribute("employees", employees);
 
 //         int pageSize = 10;
 //        
@@ -71,7 +72,7 @@ public class ListController extends HttpServlet {
 //        request.setAttribute("pageIndex", pageIndex);
 //        request.setAttribute("totalrecord", totalrecord);
 //        request.setAttribute("totalpage", totalpage);
-        request.getRequestDispatcher("../view/employee/list.jsp").forward(request, response);
+       // request.getRequestDispatcher("../view/employee/list.jsp").forward(request, response);
     }
 
     /**
