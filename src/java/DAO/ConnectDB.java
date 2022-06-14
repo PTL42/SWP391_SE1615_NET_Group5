@@ -31,7 +31,7 @@ public class ConnectDB {
     }
     
     public ConnectDB() {
-        this("jdbc:sqlserver://localhost:1433;databaseName=DB_QLBH", "sa", "thanhlong27410");
+        this("jdbc:sqlserver://localhost:1433;databaseName=ShopManagement", "sa", "123456");
                                                            //ShopManagement //123456
     }
     //Khởi tạo và chạy ResultSet
