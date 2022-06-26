@@ -32,15 +32,19 @@
                                                     <th>InvoiceID</th>
                                                     <th>CreatedDate</th>
                                                     <th>EmployeeID</th>
-                                                    <th>CustomerID</th>                                               
+                                                    <th>CustomerID</th>  
+                                                    <th>Detail</th>  
+                                                      
                                                 </tr>
                                             </thead>                                       
                                             <c:forEach items="${listI}" var="o">
                                                 <tr>
                                                     <td>${o.invoiceID}</td>
                                                     <td>${o.createdDate}</td>
-                                                    <td>${o.employeeID}</td>
-                                                    <td>${o.customerID}</td>
+                                                    <td><a href="DetailEmployee?sid=${o.employeeID}" >${o.employeeID}</a></td>
+                                                    <td><a href="DetailCustomer?sid=${o.customerID}" >${o.customerID}</a></td>
+                                                    <td><a href="Bill?sid=${o.invoiceID}" >Details</a> </td>
+                                                    
                                                 </tr>
                                             </c:forEach>                                      
                                         </table>

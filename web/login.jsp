@@ -50,7 +50,7 @@
                                             <input type="textbox" id="usrname" name="username" class="form-control" placeholder="Username" value="">
                                         </div>
                                         <div class="form-group">
-                                            <input type="password" name="password" id="psw" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" class="form-control" placeholder="Password">
+                                            <input type="password" name="password" id="psw" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,8}" class="form-control" placeholder="Password">
                                         
                                         </div>
                                         <div class="form-group">

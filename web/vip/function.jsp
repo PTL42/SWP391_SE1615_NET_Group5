@@ -14,7 +14,7 @@
 <!--                        <a class="has-arrow" href="javascript:void()" aria-expanded="false">
                             <i class="icon-speedometer menu-icon"></i><span class="nav-text">Profit Manager</span>
                         </a>-->
-                        <a href="ProfitController" aria-expanded="false">
+                        <a href="dashboardController" aria-expanded="false">
                             <i class="icon-speedometer menu-icon"></i><span class="nav-text">Profit Manager</span>
                         </a>
                         

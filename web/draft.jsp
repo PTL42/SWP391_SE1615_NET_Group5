@@ -54,7 +54,7 @@
                                     <h3>Hello,${sessionScope.useremail}</h3>
                                     <form action="draft" method="post" class="mt-5 mb-3 login-input">
                                         <div class="form-group">
-                                            <input type="password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"  class="form-control" name="password" id="password" placeholder="Password" required onChange="onChange()">
+                                            <input type="password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,8}"  class="form-control" name="password" id="password" placeholder="Password" required onChange="onChange()">
                                         </div>
                                         <div class="form-group">
                                             <input type="password" class="form-control" name="confirm"  id="confirm_password" placeholder="Confirm Password" required onChange="onChange()">

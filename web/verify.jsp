@@ -40,7 +40,7 @@
                                     <form action="verify" method="post" class="user">
                                     
                                         <div class="form-group">
-                                            <input id="code" style="display: block;" type="textbox" name="authcode" class="form-control form-control-user"
+                                            <input id="code" style="display: block;" pattern="(?=.*[a-z])(?=.*[A-Z]).{8,8}" type="textbox" name="authcode" class="form-control form-control-user"
                                                 id="exampleInputEmail" aria-describedby="emailHelp"
                                                 placeholder="Enter Verify....">
                                             
