@@ -221,22 +221,8 @@
 
 (function($) {
     "use strict"
-    
+
     let ctx = document.getElementById("chart_widget_2");
-//    var size=document.getElementById("size2").innerHTML;
-//    const all=[];
-//         for (var i = 0, max = size; i < max; i++) {
-//          var c=0;
-//    var b=document.getElementById("chatt"+i).innerHTML;
-//         all.push(b);
-//         }
-     
-//     for (var i = 0, max = size; i < max; i++) {
-//         all.push(b);
-//    }
-//     let text=all[0];
-//    console.log(all[1]);
-//document.getElementById("demo2").innerHTML =text;
     ctx.height = 280;
     new Chart(ctx, {
         type: 'line',
@@ -245,8 +231,8 @@
             type: 'line',
             defaultFontFamily: 'Montserrat',
             datasets: [{
-                data: [0, 57, 57, 12, 85, 10, 50],
-                label: "Iphone 6",
+                data: [0, 15, 57, 12, 85, 10, 50],
+                label: "iPhone X",
                 backgroundColor: '#847DFA',
                 borderColor: '#847DFA',
                 borderWidth: 0.5,

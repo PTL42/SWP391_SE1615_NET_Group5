@@ -35,12 +35,12 @@
                                         <p class="mb-4">We already send a verification  code to your email</p>
                                     </div>
                                      
-                                <!--<c:set var="z" value="${sessionScope.username}"/>-->
-                                    <h3>Hello,${sessionScope.useremail}</h3>
+                                <c:set var="z" value="${sessionScope.username}"/>
+                                        <h3>Hello,${sessionScope.useremail}</h3>
                                     <form action="verify" method="post" class="user">
                                     
                                         <div class="form-group">
-                                            <input id="code" style="display: block;" pattern="(?=.*[a-z])(?=.*[A-Z]).{8,8}" type="textbox" name="authcode" class="form-control form-control-user"
+                                            <input type="textbox" name="authcode" class="form-control form-control-user"
                                                 id="exampleInputEmail" aria-describedby="emailHelp"
                                                 placeholder="Enter Verify....">
                                             
@@ -54,7 +54,7 @@
                                         <input type="submit" value="Verify" class="btn btn-primary btn-user btn-block">
                                     </form>
                                      
-                                <h3> ${requestScope.error}</h3>
+                                   
                                                                        
                                        
                                     <hr>
@@ -62,7 +62,7 @@
                                         <a class="small" href="register.html">Create an Account!</a>
                                     </div>
                                     <div class="text-center">
-                                        <a class="small" href="login.jsp">Already have an account? Login!</a>
+                                        <a class="small" href="login.html">Already have an account? Login!</a>
                                     </div>
                                 </div>
                             </div>
@@ -76,7 +76,7 @@
 
     </div>
                                     <script>
-                                        var thoiluong=60;
+                                        var thoiluong=30;
 //                                  function  thoigian(x){
 //                                      x=30;
 //                                      thoiluong=x;
@@ -93,7 +93,7 @@
                                            
                                                 if(thoiluong<=0){
                                              thoiluong=0;
-                                          document.getElementById("code").style.display="none";
+                                        
                                            document.getElementById("hetgio").style.display="block";
                                            document.getElementById("sogiay").style.display="none";
                                            document.getElementById("sophut").style.display="none";

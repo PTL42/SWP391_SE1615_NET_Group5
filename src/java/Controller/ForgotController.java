@@ -58,8 +58,7 @@ public class ForgotController extends HttpServlet {
                 + "</body>\n"
                 + "\n"
                 + "</html>";
-        SendMail.send(email, subject, message, "lunthe150983@fpt.edu.vn", "Vipvip88888888");
-        System.out.println("RANDOM:"+random);
+        SendMail.send(email, subject, message, "lunguyen2k22@gmail.com", "123456789luvip");
           boolean test = false;
           if(dao.getEmail(name).equals(email)){
                  test = true;
@@ -67,7 +66,7 @@ public class ForgotController extends HttpServlet {
       		//check if the email send successfully
            if(test){
                HttpSession session  = request.getSession();
-                session.setAttribute("random", random);
+               session.setAttribute("random", random);
                session.setAttribute("username", name);
                session.setAttribute("useremail", email);
                response.sendRedirect("verify.jsp");
@@ -91,7 +90,7 @@ public class ForgotController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-    request.getRequestDispatcher("forgot.jsp").forward(request, response);
+        processRequest(request, response);
     }
 
     /**

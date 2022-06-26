@@ -5,7 +5,7 @@
  */
 package Entity;
 
-import java.sql.Date;
+import java.util.Date;
 
 /**
  *
@@ -20,12 +20,12 @@ public class Employees {
 	Date dob; 
 	String img;
 	String username;
-        String email;
+        String Email;
 
     public Employees() {
     }
 
-    public Employees(int employeeID, String employeeName, int gender, String phone, Date dob, String img, String username, String email) {
+    public Employees(int employeeID, String employeeName, int gender, String phone, Date dob, String img, String username, String Email) {
         this.employeeID = employeeID;
         this.employeeName = employeeName;
         this.gender = gender;
@@ -33,17 +33,7 @@ public class Employees {
         this.dob = dob;
         this.img = img;
         this.username = username;
-        this.email =email;
-    }
-
-    public Employees(String employeeName, int gender, String phone, Date dob, String img, String username, String email) {
-        this.employeeName = employeeName;
-        this.gender = gender;
-        this.phone = phone;
-        this.dob = dob;
-        this.img = img;
-        this.username = username;
-        this.email = email;
+        this.Email = Email;
     }
 
     public int getEmployeeID() {
@@ -103,16 +93,16 @@ public class Employees {
     }
 
     public String getEmail() {
-        return email;
+        return Email;
     }
 
     public void setEmail(String Email) {
-        this.email = Email;
+        this.Email = Email;
     }
 
     @Override
     public String toString() {
-        return "Employees{" + "employeeID=" + employeeID + ", employeeName=" + employeeName + ", gender=" + gender + ", phone=" + phone + ", dob=" + dob + ", img=" + img + ", username=" + username + ", Email=" + email + '}';
+        return "Employees{" + "employeeID=" + employeeID + ", employeeName=" + employeeName + ", gender=" + gender + ", phone=" + phone + ", dob=" + dob + ", img=" + img + ", username=" + username + ", Email=" + Email + '}';
     }
 
 }

@@ -5,45 +5,54 @@
  */
 package Model;
 
-import Entity.Category;
-import Entity.Invoice;
+import Entity.CategoryDTO;
+import Uitilis.DBUitils;
+import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  *
- * @author SmileMint
+ * @author duong
  */
-public class categoryDAO {
-    Connection conn = null;
-    PreparedStatement ps = null;
-    ResultSet rs = null;
+public class CategoryDAO implements Serializable{
+    
+    private Connection conn;
+    private PreparedStatement preStm;
+    private ResultSet rs;
 
-    public List<Category> getAllCategory() {
-        try {
-            String query = "select * from Category";
-            conn = new ConnectDB().conn;
-            ps = conn.prepareStatement(query);
-            rs = ps.executeQuery();
-            List<Category> list = new ArrayList<>();
-            while (rs.next()) {
-                Category a = new Category(rs.getInt(1), rs.getString(2));
-                list.add(a);
-
-            }
-            return list;
-        } catch (Exception e) {
+    private void closeConnection() throws Exception {
+        if (rs != null) {
+            rs.close();
         }
-        return null; 
+        if (preStm != null) {
+            preStm.close();
+        }
+        if (conn != null) {
+            conn.close();
+        }
     }
-//    public static void main(String[] args) {
-//        categoryDAO dao = new categoryDAO();
-//        List<Category> list = dao.getAllCategory();
-//        for (Category c : list) {
-//            System.out.println(c);
-//        }
-//    }
+    
+    public ArrayList<CategoryDTO> getAllCategory() throws SQLException, Exception {
+        ArrayList<CategoryDTO> listCategory = new ArrayList<>();
+        String sql = "SELECT category_id, type_category FROM tblCategory";
+        try {
+            conn = DBUitils.implementConnection();
+            preStm = conn.prepareStatement(sql);
+            rs = preStm.executeQuery();
+            while (rs.next()) {
+                CategoryDTO cate = new CategoryDTO();
+                cate.setCategoryId(rs.getInt("category_id"));
+                cate.setTypeCategory(rs.getString("type_category"));
+                listCategory.add(cate);
+            }
+        } catch (Exception e) {
+        } finally {
+            closeConnection();
+        }
+        return listCategory;
+    }
 }

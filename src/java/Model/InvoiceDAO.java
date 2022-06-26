@@ -1,117 +1,158 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Model;
 
-import Entity.Invoice;
-import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.ArrayList;
-import java.sql.Date;
-import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import Entity.Cart;
+import Entity.Invoice;
 
-/**
- *
- * @author SmileMint
- */
-public class InvoiceDAO  extends ConnectDB{
+public class InvoiceDAO extends ConnectDB {
 
-    Connection conn = null;
-    PreparedStatement ps = null;
+    PreparedStatement stm = null;
     ResultSet rs = null;
 
-    public List<Invoice> getAllInvoice() {
+    public ArrayList<Invoice> getListInvoiceByEmployeeID(int employeeID) {
+        ArrayList<Invoice> list = new ArrayList<>();
+        String sql = "SELECT * FROM Invoice WHERE employeeID = " + employeeID;
         try {
-            String query = "select * from Invoice";
-            conn = new ConnectDB().conn;
-            ps = conn.prepareStatement(query);
-            rs = ps.executeQuery();
-            List<Invoice> list = new ArrayList<>();
+            stm = conn.prepareStatement(sql);
+            rs = stm.executeQuery();
             while (rs.next()) {
-                Invoice a = new Invoice(rs.getInt(1), rs.getDate(2), rs.getInt(3), rs.getInt(4));
-                list.add(a);
-
+                int invoiceID = rs.getInt("invoiceID");
+                Date createdDate = rs.getDate("createdDate");
+                int customerID = rs.getInt("customerID");
+                list.add(new Invoice(invoiceID, createdDate, employeeID, customerID));
             }
-            return list;
-        } catch (Exception e) {
-        }
-        return null;
-    }
-
-    public List<Invoice> getInvoicebyInvoiceID(String txtSearch) {
-        try {
-            String query = "select * from Invoice \n"
-                    + "where invoiceID = ?";
-            conn = new ConnectDB().conn;
-            ps = conn.prepareStatement(query);
-            ps.setString(1, txtSearch);
-            rs = ps.executeQuery();
-            List<Invoice> list = new ArrayList<>();
-            while (rs.next()) {
-                Invoice a = new Invoice(rs.getInt(1), rs.getDate(2), rs.getInt(3), rs.getInt(4));
-                list.add(a);
-
-            }
-            return list;
-        } catch (Exception e) {
-        }
-        return null;
-    }
-     public int addInvoice(Invoice i){
-        int n=0;
-        String sql="INSERT INTO [dbo].[Invoice]\n" +
-"           ([createdDate]\n" +
-"           ,[employeeID]\n" +
-"           ,[customerID])\n" +
-"     VALUES\n" +
-"           (?\n" +
-"           ,?\n" +
-"           ,?)";
-        try {
-            PreparedStatement pre =conn.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS);
-//            set value for?
-//            ?index start 1
-//            pre.setDataType(index,value);
-//            dataType of dataType of fied 
-
-                  pre.setDate(1,i.getCreatedDate());
-                  pre.setInt(2,i.getEmployeeID());
-                  pre.setInt(3, i.getCustomerID());
-                
-                  n=pre.executeUpdate();
-                  ResultSet rs1=pre.getGeneratedKeys();
-                  if(rs1.next()){
-                      return rs1.getInt(1);
-                  }
-                  System.out.println(sql);
         } catch (SQLException ex) {
-          ex.printStackTrace();
+            Logger.getLogger(InvoiceDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return n;
+        return list;
     }
-     
-    public static void main(String[] args) {
-        InvoiceDAO dao = new InvoiceDAO();
-//        List<Invoice> list = dao.getAllInvoice();
-//        for (Invoice c : list) {
-//            System.out.println(c);
-//        }
-          LocalDate date= java.time.LocalDate.now();
-        String date1=date.toString();
-                            java.sql.Date date2=java.sql.
-                                    Date.valueOf(date1);
-                            
-//            int n=dao.addInvoice(new Invoice(date2, 4, 3));
-            System.out.println(date2);
 
+    public void addInvoice(int invoiceID, int customerID, int employeeID, ArrayList<Cart> cart) {
+        String addInvoiceQuery = "INSERT INTO [dbo].[Invoice]\n"
+                + "           ([invoiceID]\n"
+                + "           ,[createdDate]\n"
+                + "           ,[employeeID]\n"
+                + "           ,[customerID])\n"
+                + "     VALUES\n"
+                + "           (?\n"
+                + "           ,?\n"
+                + "           ,?\n"
+                + "           ,?)";
+        Date createdDate = new Date(System.currentTimeMillis());
+        try {
+            stm = conn.prepareStatement(addInvoiceQuery);
+            stm.setString(1, String.valueOf(invoiceID));
+            stm.setString(2, String.valueOf(createdDate));
+            stm.setString(3, String.valueOf(employeeID));
+            stm.setString(4, String.valueOf(customerID));
+            stm.executeUpdate();
+            stm.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(InvoiceDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
+            String addDetailInvoiceQuery = "INSERT INTO [dbo].[Product_Invoice]\n"
+                    + "           ([quantity]\n"
+                    + "           ,[invoiceID]\n"
+                    + "           ,[productID])\n"
+                    + "     VALUES\n"
+                    + "           (?\n"
+                    + "           ,?\n"
+                    + "           ,?)";
+            for (Cart c : cart) {
+                stm = conn.prepareStatement(addDetailInvoiceQuery);
+                stm.setString(1, String.valueOf(c.getQuantity()));
+                stm.setString(2, String.valueOf(invoiceID));
+                stm.setString(3, String.valueOf(c.getProductID()));
+                stm.executeUpdate();
+                stm.close();
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(InvoiceDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
-    
+
+    public ArrayList<Cart> getCartOfInvoice(int invoiceID) {
+        ArrayList<Cart> cart = new ArrayList<>();
+        String sql = "SELECT a.productID, b.productName, a.quantity "
+                + "FROM Product_Invoice AS a LEFT JOIN Product AS b "
+                + "ON a.productID = b.productID"
+                + "WHERE a.invoiceID =  " + invoiceID;
+        try {
+            rs = stm.executeQuery(sql);
+            while (rs.next()) {
+                int quantity = rs.getInt("quantity");
+                int productID = rs.getInt("productID");
+                String productName = rs.getString("productName");
+                cart.add(new Cart(productID, productName, quantity));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(InvoiceDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return cart;
+    }
+
+    public ArrayList<Invoice> searchInvoice(int invoiceID) {
+        String sql = "SELECT * FROM Invoice WHERE invoiceID like '%" + invoiceID + "%'";
+        ArrayList<Invoice> list = new ArrayList();
+        try {
+            rs = stm.executeQuery(sql);
+            while (rs.next()) {
+                int id = rs.getInt("invoiceID");
+                Date createdDate = rs.getDate("createdDate");
+                int employeeID = rs.getInt("employeeID");
+                int customerID = rs.getInt("customerID");
+                list.add(new Invoice(id, createdDate, employeeID, customerID));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(InvoiceDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return list;
+    }
+
+    public ArrayList<Invoice> searchInvoice(Date createdDate) {
+        String sql = "SELECT * FROM Invoice WHERE createdDate = " + createdDate;
+        ArrayList<Invoice> list = new ArrayList();
+        try {
+            rs = stm.executeQuery(sql);
+            while (rs.next()) {
+                int invoiceID = rs.getInt("invoiceID");
+                int employeeID = rs.getInt("employeeID");
+                int customerID = rs.getInt("customerID");
+                list.add(new Invoice(invoiceID, createdDate, employeeID, customerID));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(InvoiceDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return list;
+    }
+
+    public ArrayList<Invoice> searchInvoice(String customerName) {
+        String sql = "SELECT i.invoiceID, i.createdDate, i.employeeID,c.customerID,c.customerName "
+                + "FROM Invoice as i LEFT JOIN Customer as c "
+                + "ON i.customerID = c.customerID "
+                + "WHERE customerName like '%" + customerName + "%'";
+        ArrayList<Invoice> list = new ArrayList();
+        try {
+            rs = stm.executeQuery(sql);
+            while (rs.next()) {
+                int id = rs.getInt("invoiceID");
+                Date createdDate = rs.getDate("createdDate");
+                int employeeID = rs.getInt("employeeID");
+                int customerID = rs.getInt("customerID");
+                list.add(new Invoice(id, createdDate, employeeID, customerID));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(InvoiceDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return list;
+    }
 
 }

@@ -1,5 +1,4 @@
 
-
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -42,17 +41,48 @@ public class VerifyController extends HttpServlet {
             HttpSession session = request.getSession();
            String r=(String) session.getAttribute("random");
             String code = request.getParameter("authcode");
-
-            if(code.equals(r)){
+           Date date=new Date();
+         SimpleDateFormat sdf2 = new SimpleDateFormat("ss");
+         String q=sdf2.format(date);
+       int x1 = Integer.parseInt(q);
+       System.out.println(q);
+       while(true){
+             Date date2=new Date();
+         SimpleDateFormat sdf = new SimpleDateFormat("ss");
+       String a=sdf.format(date2);
+//        System.out.println(a);
+        int x = Integer.parseInt(a);
+             if(code.equals(r)){
                 out.println("Verification Done");
                   response.sendRedirect("draft.jsp");
             }else{
-//                out.println("Incorrect verification code");
-//                session.removeAttribute("useremail");
-                   String error = "Incorrect verification code";
-                    request.setAttribute("error", error);
-                  request.getRequestDispatcher("verify.jsp").forward(request, response);
+                out.println("Incorrect verification code");
+                break;
         }
+        if(x1<30){
+            int b=x1+30;
+            if(x==b){
+                System.out.println("da xoa random");
+                session.removeAttribute("random");
+                break;
+            }
+        }else{
+            int c=x1-30;
+            if(x==c){
+                
+                System.out.println("da xoa random");
+                session.removeAttribute("random");
+                break;
+            }
+        }
+       }
+           
+//            if(code.equals(r)){
+//                out.println("Verification Done");
+//                  response.sendRedirect("draft.jsp");
+//            }else{
+//                out.println("Incorrect verification code");
+//        }
 
     }
     }
@@ -68,7 +98,7 @@ public class VerifyController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getRequestDispatcher("login.jsp").forward(request, response);
+        processRequest(request, response);
     }
 
     /**

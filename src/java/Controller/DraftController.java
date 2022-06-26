@@ -8,7 +8,6 @@ package Controller;
 import Model.AccountDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -35,10 +34,9 @@ public class DraftController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-          HttpSession session = request.getSession();
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-             
+               HttpSession session = request.getSession();
              String pass = request.getParameter("confirm");
              String user =(String) session.getAttribute("username");
              out.print(user);
@@ -46,23 +44,17 @@ public class DraftController extends HttpServlet {
              int n=dao.ChangePassword(user, pass);
              if(n>0){
                  String mess=("Change password successfully");
-                 request.setAttribute("mess", mess);
-                 request.getRequestDispatcher("draft.jsp").forward(request, response);
+                 session.setAttribute("mess", mess);
+                 response.sendRedirect("draft.jsp");
                  
              }else{
                  String mess=("Password change failed");
-                   request.setAttribute("mess", mess);
-                 request.getRequestDispatcher("draft.jsp").forward(request, response);
+                 session.setAttribute("mess", mess);
+                  response.sendRedirect("draft.jsp");
              }
              
         }
-            catch (Exception e) {
-            session.setAttribute("ex", e);
-            RequestDispatcher dispatcher2 = request.getRequestDispatcher("/page-error-500.html");
-            dispatcher2.forward(request, response);
-        }
-        }
-    
+    }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
@@ -76,7 +68,7 @@ public class DraftController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-       request.getRequestDispatcher("login.jsp").forward(request, response);
+        processRequest(request, response);
     }
 
     /**

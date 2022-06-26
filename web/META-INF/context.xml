@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context antiJARLocking="true" path="">
+  <Resource auth="Container" driverClassName="com.microsoft.sqlserver.jdbc.SQLServerDriver" name="SHOPPING" password="admin" type="javax.sql.DataSource" url="jdbc:sqlserver://localhost:1433;database=ShoppingOnline" username="he"/>
+</Context>

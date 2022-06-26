@@ -5,14 +5,14 @@
  */
 package Controller;
 
-import Entity.Account;
-import Model.AccountDAO;
+import Define.Define;
+import Entity.CategoryDTO;
+import Entity.UserDTO;
+import Model.CategoryDAO;
+import Model.UserDAO;
 import java.io.IOException;
-import java.io.PrintWriter;
-import javax.servlet.RequestDispatcher;
+import java.util.ArrayList;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -20,9 +20,8 @@ import javax.servlet.http.HttpSession;
 
 /**
  *
- * @author Admin
+ * @author duong
  */
-@WebServlet(name = "LoginController", urlPatterns = {"/login"})
 public class LoginController extends HttpServlet {
 
     /**
@@ -37,60 +36,37 @@ public class LoginController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+          String url = Define.LOGIN_PAGE;
         HttpSession session = request.getSession();
         try {
+            String txtEmail = request.getParameter("txtEmail");
+            String txtPassword = request.getParameter("txtPassword");
 
-            /* TODO output your page here. You may use following sample code. */
-            String u = request.getParameter("username").trim().toLowerCase();
-            String p = request.getParameter("password").trim();
-            boolean remember = request.getParameter("remember") != null;
-            AccountDAO dao = new AccountDAO();
-            Account a = dao.getAccount(u, p);
-//            out.println(cus);
-            String service = request.getParameter("do");
-//            out.print(service);
-//            out.print("ok");
+            UserDAO userDAO = new UserDAO();
+            
+            UserDTO userDTO = new UserDTO();
+            userDTO.setEmail(txtEmail);
+            userDTO.setPassword(txtPassword);
 
-            if (service == null) {
-                service = "logincus1";
-//                out.print("ok");
-            }
-            if (service.equals("logincus1")) {
+            UserDTO role = userDAO.getRole(userDTO);
+            if (role.getRole_name() != null) {
+                session.setAttribute("USER", role.getFull_name());
+                session.setAttribute("EMAIL", role.getEmail());
+                session.setAttribute("ROLE", role.getRole_name());
+                url = Define.INDEX_PAGE;
 
-                if (a == null) {
-                    String error = "Your username or password is incorrect";
-                    request.setAttribute("error", error);
-                    request.getRequestDispatcher("login.jsp").forward(request, response);
-                } else {
-                    if (remember) {
-                        Cookie usernamecookie = new Cookie("username", u);
-                        Cookie passcookie = new Cookie("password", p);
-                        usernamecookie.setMaxAge(60 * 60 * 24);
-                        passcookie.setMaxAge(60 * 60 * 24);
-                        response.addCookie(usernamecookie);
-                        response.addCookie(passcookie);
-                    }
-                    if (a.getRole() == 1) {
-
-                        session.setAttribute("account", a);
-                        session.setAttribute("nameacc", a.getUsername());
-                        response.sendRedirect("HomeController");
-//                        response.sendRedirect("index.jsp");
-                    } else {
-
-                        session.setAttribute("account", a);
-                        session.setAttribute("nameacc", a.getUsername());
-                        //      session.setAttribute("accid", a.getCustomerID());
-
-                        response.sendRedirect("HomePageEmployeeController");
-
-                    }
-                }
+                CategoryDAO categoryDAO = new CategoryDAO();
+                ArrayList<CategoryDTO> listCategory = categoryDAO.getAllCategory();
+                request.setAttribute("LIST_CATEGORY", listCategory);
+            } else {
+                request.setAttribute("LOGIN_MSG", "Wrong username/passwrod");
             }
         } catch (Exception e) {
-            session.setAttribute("ex", e);
-            RequestDispatcher dispatcher2 = request.getRequestDispatcher("/page-error-500.html");
-            dispatcher2.forward(request, response);
+            e.printStackTrace();
+            log("Error at Login Controller " + e.getLocalizedMessage());
+            request.setAttribute("ERROR_MSG", e.getLocalizedMessage());
+        } finally {
+            request.getRequestDispatcher(url).forward(request, response);
         }
     }
 
@@ -106,7 +82,7 @@ public class LoginController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getRequestDispatcher("login.jsp").forward(request, response);
+        processRequest(request, response);
     }
 
     /**

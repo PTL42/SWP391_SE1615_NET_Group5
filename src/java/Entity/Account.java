@@ -5,9 +5,6 @@
  */
 package Entity;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 /**
  *
  * @author Admin
@@ -55,35 +52,4 @@ public class Account {
         return "Account{" + "username=" + username + ", password=" + password + ", role=" + role + '}';
     }
     
-    public static void checktime() {
-     Date date=new Date();
-         SimpleDateFormat sdf2 = new SimpleDateFormat("ss");
-         String q=sdf2.format(date);
-       int x1 = Integer.parseInt(q);
-       System.out.println(q);
-       while(true){
-             Date date2=new Date();
-         SimpleDateFormat sdf = new SimpleDateFormat("ss");
-       String a=sdf.format(date2);
-// 
-        int x = Integer.parseInt(a);
-             
-        if(x1<30){
-            int b=x1+30;
-            if(x==b){
-                System.out.println("da xoa random");
-                
-                break;
-            }
-        }else{
-            int c=x1-30;
-            if(x==c){
-                
-                System.out.println("da xoa random");
-              
-                break;
-            }
-        }
-}
-    }
 }
