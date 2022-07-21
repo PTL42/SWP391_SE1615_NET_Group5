@@ -236,7 +236,32 @@ public class EmployeeDAO extends ConnectDB {
 //                       System.out.println(employees);
 //                   }
 //    }
-
+ public List<Employees> Search(String name) {
+        try {
+            String sql = "select * from Employees where employeeName like "+"'%"+ name+"%'";
+           conn = getConnection();
+            state = conn.prepareStatement(sql);
+            rs = state.executeQuery();
+           
+          rs = state.executeQuery();
+            List<Employees> list = new ArrayList<>();
+            while (rs.next()) {
+                int id1 = rs.getInt(1);
+                String name1 = rs.getString(2);
+                int gender = rs.getInt(3);
+                String phone = rs.getString(4);
+                Date date = rs.getDate(5);
+                String img = rs.getString(6);
+                String username = rs.getString(7);
+                String email = rs.getString(8);
+                Employees a = new Employees(id1, name1, gender, phone, date, img, username, email);
+                list.add(a);
+            }
+            return list;
+        } catch (Exception e) {
+        }
+        return null;
+    }
     public void UpdateEmployee(String id, String name, String gender, String Phone, String birthday, String img) {
         String sql = "update Employees set employeeName=?,\n"
                 + "gender=?,\n"

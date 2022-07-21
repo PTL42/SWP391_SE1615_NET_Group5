@@ -5,26 +5,22 @@
  */
 package Controller;
 
-import Entity.Cart;
-import Entity.Product;
-import Model.ProductDAO;
+import Entity.ContactUs;
+import Model.ContactDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.LinkedHashMap;
-import java.util.Map;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 /**
  *
  * @author Admin
  */
-@WebServlet(name = "addtocart3", urlPatterns = {"/addtocart3"})
-public class addtocart2 extends HttpServlet {
+@WebServlet(name = "ContactUsController", urlPatterns = {"/contactus"})
+public class ContactUsController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -40,53 +36,25 @@ public class addtocart2 extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            HttpSession session = request.getSession();
-            Integer n = (Integer) session.getAttribute("n");
-
-            Object a = session.getAttribute("account");
-            if (a != null) {
-
-                ProductDAO daopro = new ProductDAO();
-                String tid = request.getParameter("id");
-                int proid = Integer.parseInt(tid);
-                Product k = daopro.getProductbyID(proid);
-                if (k == null) {
-                    session.setAttribute("n1", 5);
-                    response.sendRedirect((String) session.getAttribute("url"));
-                } else {
-                    Map<Integer, Cart> cart = (Map<Integer, Cart>) session.getAttribute("cart");
-                    if (cart == null) {
-                        cart = new LinkedHashMap<>();
+             String submit = request.getParameter("submit");
+             ContactDAO dao=new ContactDAO();
+                    System.out.println(submit);
+                    if (submit == null) {
+           request.getRequestDispatcher("ContactUs.jsp").forward(request, response);
+                    }else{
+                        String name =request.getParameter("name");
+                        String email =request.getParameter("email");
+                        String phone =request.getParameter("phone");
+                        String mess =request.getParameter("mess");
+                        ContactUs u=new ContactUs(name, email, phone, mess, 0);
+                        int k=dao.insertContactUs(u);
+                        if(k>0){
+                               request.getRequestDispatcher("MessSent.jsp").forward(request, response);
+                        }else{
+                              request.getRequestDispatcher("ContactUs.jsp").forward(request, response);
                     }
-                    if (cart.containsKey(proid)) {
-                        int oldQuantity = cart.get(proid).getQuantity();
-                        cart.get(proid).setQuantity(oldQuantity + 1);
-                    } else {
-                        Product pro = new ProductDAO().getProductbyID(proid);
-                        cart.put(proid, Cart.builder().product(pro).quantity(1).build());
-                        System.out.println(cart);
-
-                    }
-                    double total = 0;
-                    for (Map.Entry<Integer, Cart> entry : cart.entrySet()) {
-                        Integer key = entry.getKey();
-                        Cart carts = entry.getValue();
-                        total += carts.getQuantity() * carts.getProduct().getPrice();
-
-                    }
-
-                    System.out.println(cart.size());
-                    session.setAttribute("cart", cart);
-                             session.setAttribute("n1", 0);
-                    session.setAttribute("n", n);
-                    session.setAttribute("total2", total);
-                    response.sendRedirect((String) session.getAttribute("url"));
-                }
-            } else {
-                response.sendRedirect("login.jsp");
-//            response.sendRedirect("ControllerProduct");
-            }
         }
+    }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

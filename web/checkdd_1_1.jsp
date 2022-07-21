@@ -38,7 +38,7 @@
             <div style="padding: 0 20%; margin-top: 10px ">
                 <c:if test="${ha==1}">
                     <div class="alert alert-primary alert-dismissible fade show" role="alert">
-                        <strong>Note:</strong> <span font-weight-semi-bold text-capitalize style="color: black">${mess}</span>
+                        <strong>Note:</strong> <span font-weight-semi-bold text-capitalize style="color: black">Update2 Success</span>
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
                 </c:if>
@@ -59,8 +59,8 @@
                         <div class="card">
                             <div class="card-body">
                                 <div class="card-title">
-                                    <h4>Table Employees Salary</h4>
-                                    <a href="editsalary">Edit Salary</a>
+                                    <h4>Edit Employees Salary</h4>
+                                    <a href="">Edit Salary</a>
                                 </div>
                                 <div class="table-responsive">
                                     <table class="table">
@@ -83,36 +83,28 @@
 
 
 
-<!--                                        <form action="salarytotal" method="post">  -->
-                                          
+                                        <form action="editsalary" method="post">  
                                             <c:forEach items="${listem}" var="e">
-                                                
                                                 <tr>
                                                     <th>${e.employeeID}</th>
                                                     <td><img width="50" height="50" src="${e.img}"></td>
                                                     <td>${e.employeeName}</td>
-                                                    <td>${e.salary}</td>
+                                                    <td><input style="width:70px" name="id" type="hidden"  value="${e.employeeID}">
+                                                        <input style="width:70px" name="quantity" type="number" step=0.01 value="${e.salary}"></td>
                                                     <td>${e.from}</td>
 
                                                     <td>
                                                        ${e.to}
                                                     </td>
                                                     <td>
-                                                         <form action="salarytotal" method="post"> 
-                                                       
-                                                          <input type="hidden" name="oid" value="${e.employeeID}"  > 
-                                                          
-                                                      <select   name="stateid"  class="form-control input-rounded" class="form-control form-control-lg"  onchange="this.form.submit()">
+                                                      
                                                 
-                                                        <option class="fa fa-circle-o text-warning  mr-2" value="0" ${e.state== 0 ? 'selected="selected"' : ''}>Pending</option>
-                                                        <option class="fa fa-circle-o text-success  mr-2" value="1" ${e.state== 1 ? 'selected="selected"' : ''}>Paid</option>
+                                                        <i  class="fa fa-circle-o text-warning  mr-2" value="${e.state}" ${e.state== 0 ? '' : 'style="display: none"'}>Pending</i>
+                                                        <i class="fa fa-circle-o text-success  mr-2" value="${e.state}" ${e.state== 1 ? '' : 'style="display: none"'}>Paid</i>
 
                                                    
 
-                                                </select>
-                                                         </form>
-                                                         
-                                                         </td>
+                                                </td>
                                                     <td>${e.totalwork}</td>
                                                     <td>${e.salarytotal}</td>
 
@@ -120,8 +112,12 @@
                                             </c:forEach>
 
                                     </table>
-                                    
-                                    <!--</form>-->
+                                    <div class="form-group row">
+                                        <div class="col-lg-8 ml-auto">
+                                            <button type="submit" name="submit" class="btn btn-primary" id="toastr-success-top-right">Submit</button>
+                                        </div>
+                                    </div>
+                                    </form>
                                 </div>
 
                             </div>

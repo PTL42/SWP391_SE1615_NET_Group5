@@ -99,15 +99,19 @@ public class SalaryController extends HttpServlet {
                     for (Integer integer : listint) {
                         SalaryDetail salaryd = new SalaryDetail(integer, date2);
                         for (SalaryDetail salaryDetail : listD) {
+                           
                             if (salaryd.getEmployeeID() == salaryDetail.getEmployeeID() && salaryd.getDay().equals(salaryDetail.getDay()) == true ) {
                                 k = true;
+                               
                             }
                         }
                         if (k == false) {
                             sd.addSalaryDetail(salaryd);
                             sd2.updateSalary2(salaryd.getEmployeeID());
+                            sd2.updateSalarytotal(salaryd.getEmployeeID());
                             
                         }
+                        k=false;
                     }
                     for (Integer integer : listintabsent) {
                         sd.removeSalaryDetail(integer, date2);

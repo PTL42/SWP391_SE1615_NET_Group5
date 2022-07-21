@@ -15,6 +15,7 @@ import java.io.PrintWriter;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.util.Calendar;
 import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -46,20 +47,44 @@ public class SalarytotalController extends HttpServlet {
             /* TODO output your page here. You may use following sample code. */
      HttpSession session = request.getSession();
             Object a = session.getAttribute("account");
+        
             if (a != null) {
                 Account account = (Account) a;
 
+  
                 SimpleDateFormat dt3 = new SimpleDateFormat("dd-MM-yyyy");
+                SimpleDateFormat moth = new SimpleDateFormat("MM");
+                SimpleDateFormat year = new SimpleDateFormat("yyyy");
                 LocalDate date = java.time.LocalDate.now();
                 String date1 = date.toString();
+                    
+
                 Date date2 = Date.valueOf(date1);
                 String date3 = dt3.format(date2);
+                  int mothint=Integer.parseInt(moth.format(date2));
+                 int yearint=Integer.parseInt(year.format(date2));
                 SalaryDAO daos= new SalaryDAO();
                 EmployeeDAO daoem = new EmployeeDAO();
-                List<SalaryTotal> listem = daos.listAllSalaryTotal();
+                List<SalaryTotal> listem = daos.listAllSalaryTotal(mothint,yearint);
+                String oid = request.getParameter("oid");
+                String sid = request.getParameter("stateid");
+       
+                 if(oid!=null){
+                        int id=Integer.parseInt(oid);
+                        int ids=Integer.parseInt(sid);
+                        int k=daos.updateSalarystatus(ids, id);
+                        listem = daos.listAllSalaryTotal(mothint,yearint);
+                        request.setAttribute("ha",k );
+                        request.setAttribute("mess","Successfully updated employee salary:"+daoem.getEmpployeesbyID(oid).getEmployeeName() );
+                        
+                 }
+               
                   request.setAttribute("listem", listem);
                     request.setAttribute("date3", date3);
                     request.getRequestDispatcher("checkdd_1.jsp").forward(request, response);
+              
+               
+               
             }else{
                 response.sendRedirect("login.jsp");
             }

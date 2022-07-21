@@ -24,17 +24,13 @@ public class CustomerDAO  extends ConnectDB{
 
     public List<Customer> getAllCustomer() {
         try {
-            String query = "SELECT [user_id]\n" +
-"      ,[email]\n" +
-"      ,[full_name]\n" +
-"      ,[phone]\n" +
-"  FROM [ShoppingOnline].[dbo].[tblUser] where role_id=2";
+            String query = "select * from Customer";
             conn = getConnection();
             state = conn.prepareStatement(query);
             rs = state.executeQuery();
             List<Customer> list = new ArrayList<>();
             while (rs.next()) {
-                Customer a = new Customer(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4));
+               Customer a = new Customer(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4),rs.getString(5),rs.getString(6),rs.getString(7),rs.getString(8));
                 list.add(a);                  
             }
             return list;
@@ -75,23 +71,41 @@ public class CustomerDAO  extends ConnectDB{
         }
         return a; 
     }
-       public void insertCustomer(String pdname, String adress, String phone, String img, String details, String email) {
-        String query = "insert into Customer values(?,?,?,?,?,?)";
+      public Customer getCustomerbyid2(String username) {
+        Customer a=null;
+        try {
+            String query = "select * from Customer where [username]='"+username+"'";
+             conn = getConnection();
+            state = conn.prepareStatement(query);
+            rs = state.executeQuery();
+            List<String> list = new ArrayList<>();
+            while (rs.next()) {
+                 a = new Customer(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4),rs.getString(5),rs.getString(6),rs.getString(7),rs.getString(8));
+                            
+            }
+            return a;
+        } catch (Exception e) {
+        }
+        return a; 
+    }
+       public void insertCustomer(String pdname, String pdAdress, String Phone, String img, String username,String pass, String Gmail) {
+        String query = "insert into Customer values(?,?,?,?,?,?,?,?)";
         try {
           conn = getConnection();
             state = conn.prepareStatement(query);
   
-            state.setString(1, pdname);
-            state.setString(2, adress);
-            state.setString(3, phone);
+             state.setString(1, pdname);
+            state.setString(2, pdAdress);
+            state.setString(3, Phone);
             state.setString(4, img);
-            state.setString(5, details);
-            state.setString(6, email);
+            state.setString(5, username);
+            state.setString(6, pass);
+            state.setString(7, Gmail);   
             state.executeUpdate();
         } catch (Exception e) {
         }
     }
-        public void UpdateCustomer(String id, String pdname, String pdAdress, String Phone, String img, String Details, String Gmail) {
+        public void UpdateCustomer(String id, String pdname, String pdAdress, String Phone, String img, String username,String pass, String Gmail) {
         String query = "update Customer set customerName = ?,\n"
                 + "address = ?,\n"
                 + "phone = ?,\n"
@@ -107,8 +121,9 @@ public class CustomerDAO  extends ConnectDB{
             state.setString(2, pdAdress);
             state.setString(3, Phone);
             state.setString(4, img);
-            state.setString(5, Details);
-            state.setString(6, Gmail);          
+            state.setString(5, username);
+            state.setString(6, pass);
+            state.setString(7, Gmail);          
             state.executeUpdate();
         } catch (Exception e) {
         }
@@ -128,9 +143,27 @@ public class CustomerDAO  extends ConnectDB{
         } catch (Exception e) {
         }
         }
+         public List<Customer> Search(String name) {
+        try {
+            String query = "select * from Customer where customerName like   "+"'%"+ name+"%'";
+           conn = getConnection();
+            state = conn.prepareStatement(query);
+            rs = state.executeQuery();
+//            state.setString(1,"'%"+ name+"%'");
+               rs = state.executeQuery();
+            List<Customer> list = new ArrayList<>();
+            while (rs.next()) {
+                 Customer a = new Customer(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4),rs.getString(5),rs.getString(6),rs.getString(7),rs.getString(8));
+                list.add(a);
+            }
+            return list;
+        } catch (Exception e) {
+        }
+        return null;
+    }
     public static void main(String[] args) {
         CustomerDAO dao = new CustomerDAO();
-        List<Customer> list = dao.getAllCustomer();
+        List<Customer> list = dao.Search("a");
         for (Customer customer : list) {
             System.out.println(customer);
             

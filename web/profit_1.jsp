@@ -111,7 +111,7 @@
                                             <div class="row">
                                             <h4 class="mb-1">Product Sales</h4>
                                             <a  href="searchprofit">
-                                     <span style="height: 50px; width: 100px;font-size: 20px" class="badge badge-primary px-2">Search</span>
+                                     <span style=" border-radius: 50%;height: 50px;width: 100px;font-size: 20px;margin-left: 1294px;" class="badge-primary px-4">Search</span>
                                         </a>
                                             </div>
                                             <p>Total Earnings of the Week</p>

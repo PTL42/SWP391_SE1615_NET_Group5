@@ -6,13 +6,21 @@
 package Controller;
 
 import Define.Define;
+import Entity.Account;
 import Entity.CategoryDTO;
+import Entity.Customer;
+import Entity.Invoice;
 import Entity.OrderDTO;
 import Entity.OrderDetailsDTO;
 import Entity.ProductDTO;
+import Entity.ProductInvoice;
+import Model.CustomerDAO;
+import Model.Invoice2DAO;
+import Model.InvoiceDAO;
 import Model.OrderDAO;
 import Model.OrderDetailsDAO;
 import Model.ProductDAO;
+import Model.ProductInvoice2DAO;
 import Model.UserDAO;
 import Model.categoryDAO;
 import java.io.IOException;
@@ -48,6 +56,12 @@ public class CheckOutCartController extends HttpServlet {
 
         HttpSession session = request.getSession();
         try {
+          
+            Object a = session.getAttribute("account");
+          Account account = (Account) a;;
+            if (a != null && account.getRole()==3) {
+                CustomerDAO daocus=new CustomerDAO();
+                Customer cus=daocus.getCustomerbyid2(account.getUsername());
             ArrayList<ProductDTO> cart = (ArrayList<ProductDTO>) session.getAttribute("CART");
             ProductDAO productDAO = new ProductDAO();
 
@@ -60,31 +74,31 @@ public class CheckOutCartController extends HttpServlet {
             UserDAO userDAO = new UserDAO();
             String email = (String) session.getAttribute("EMAIL");
             int userId = userDAO.getUserId(email);
-
+              InvoiceDAO dao = new InvoiceDAO();
             OrderDAO orderDAO = new OrderDAO();
             OrderDTO orderDTO = new OrderDTO();
 
             orderDTO.setUserId(userId);
             orderDTO.setTotalPrice(totalPrice);
-
-            int insertedOrderID = orderDAO.insertOrder(orderDTO);
+  
+            int insertedOrderID = dao.insertOrder(cus.getCustomerID());
             if (insertedOrderID != 0) {
-                OrderDetailsDAO orderDetailsDAO = new OrderDetailsDAO();
+             ProductInvoice2DAO dao2 = new ProductInvoice2DAO();
                 for (ProductDTO f : cart) {
-                    OrderDetailsDTO detailDTO = new OrderDetailsDTO();
-                    detailDTO.setOrderId(insertedOrderID);
-                    detailDTO.setProductId(f.getProductId());
-                    detailDTO.setQuantity(f.getQuantity());
-                    detailDTO.setUnitPrice(f.getSalePrice());
-                    detailDTO.setFullName(fullName);
-                    detailDTO.setAddress(address);
-                    detailDTO.setTypeShipping(typeShipping);
-                    detailDTO.setPhoneNumber(phoneNumber);
+                   ProductInvoice detailDTO = new ProductInvoice();
+                    detailDTO.setInvoiceID(insertedOrderID);
+                    detailDTO.setProductID(f.getProductID());
+                    detailDTO.setQuantity(f.getProductQuantity());
+                    detailDTO.setPrice(f.getPrice());
+//                    detailDTO.setFullName(fullName);
+//                    detailDTO.setAddress(address);
+//                    detailDTO.setTypeShipping(typeShipping);
+//                    detailDTO.setPhoneNumber(phoneNumber);
 
-                    orderDetailsDAO.insertOrderDetail(detailDTO);
+                    dao2.insertOrderDetail(detailDTO);
 
                     // minus quantity of product when 
-                    productDAO.subQuantity(f.getProductId(), f.getQuantity());
+                    productDAO.subQuantity(f.getProductID(), f.getProductQuantity());
                 }
                 session.removeAttribute("CART");
                 request.setAttribute("CHECK_OUT_CART_MSG", "Your order has been accepted");
@@ -98,7 +112,10 @@ public class CheckOutCartController extends HttpServlet {
             //get all type category
             categoryDAO categoryDAO = new categoryDAO();
             ArrayList<CategoryDTO> listCategory = categoryDAO.getAllCategorys();
-            request.setAttribute("LIST_CATEGORY", listCategory);
+            request.setAttribute("LIST_CATEGORY", listCategory);}
+            else{
+                response.sendRedirect("login.jsp");
+            }
         } catch (Exception e) {
             e.printStackTrace();
             log("Error At Check Out Controller " + e.getLocalizedMessage());

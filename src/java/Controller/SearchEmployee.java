@@ -5,23 +5,26 @@
  */
 package Controller;
 
+import Entity.Account;
 import Entity.Employees;
 import Model.EmployeeDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
  * @author SmileMint
  */
-@WebServlet(name = "ListEmployees", urlPatterns = {"/ListEmployees"})
-public class ListEmployees extends HttpServlet {
+@WebServlet(name = "SearchEmployee", urlPatterns = {"/SearchEmployee"})
+public class SearchEmployee extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -35,12 +38,24 @@ public class ListEmployees extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-           
-          EmployeeDAO dao=new EmployeeDAO();
-          List<Employees> list =dao.getAllEmpployees();
-          request.setAttribute("ListP", list);
-          request.getRequestDispatcher("ListEmployees.jsp").forward(request, response);
+        try  {
+              HttpSession session = request.getSession();
+            
+            String service = request.getParameter("do");
+            Object a = session.getAttribute("account");
+                  Account account = (Account) a;
+            if (a != null &&account.getRole()==1) {
+            String name = request.getParameter("search");
+            EmployeeDAO dao = new EmployeeDAO();
+            List<Employees> list = dao.Search(name.trim());
+            request.setAttribute("ListP", list);
+                      request.setAttribute("search", name);
+            request.getRequestDispatcher("ListEmployees.jsp").forward(request, response);
+            }
+        }catch (Exception e) {
+       
+            RequestDispatcher dispatcher2 = request.getRequestDispatcher("/page-error-500.html");
+            dispatcher2.forward(request, response);
         }
     }
 

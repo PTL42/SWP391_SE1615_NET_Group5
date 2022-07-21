@@ -287,65 +287,7 @@
             <!--**********************************
                 Sidebar start
             ***********************************-->
-            <div class="nk-sidebar">           
-                <div class="nk-nav-scroll">
-                    <ul class="metismenu" id="menu">
-                        <li class="nav-label">Dashboard</li>
-                        <li>
-                            <a class="has-arrow" href="javascript:void()" aria-expanded="false">
-                                <i class="icon-speedometer menu-icon"></i><span class="nav-text">Dashboard</span>
-                            </a>
-                            <ul aria-expanded="false">
-                                <form action="MainController">
-                                    <c:if test="${ROLE == 'ADMIN' && not empty ROLE}">
-                                        <li class="d-grid gap-2">
-                                            <div class="row">
-                                                <div class="col-2"></div>
-                                                <div class="col-10 text-start">
-                                                    <button class="btn btn-light border border-light">
-                                                        <input type="hidden" name="btnAction" value="Search Product">
-                                                        <span>Product Manager</span>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        <li/>
-                                    </c:if>
-                                </form>
-                                <form action="MainController" method="POST">
-                                    <c:if test="${ROLE != 'ADMIN' && not empty ROLE}">
-                                        <li class="d-grid gap-2">
-                                            <div class="row">
-                                                <div class="col-2"></div>
-                                                <div class="col-10 text-start">
-                                                    <button class="btn btn-light border border-light col-11 text-start">
-                                                        <input type="hidden" name="btnAction" value="Search History Product">
-                                                        <span>History Order</span>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        <li/>
-                                    </c:if>
-                                </form>
-                                <form action="MainController" method="POST">
-                                    <c:if test="${ROLE == 'ADMIN' && not empty ROLE }">
-                                        <li class="d-grid gap-2">
-                                            <div class="row">
-                                                <div class="col-2"></div>
-                                                <div class="col-10 text-start">
-                                                    <button class="btn btn-light border border-light">
-                                                        <input type="hidden" name="btnAction" value="Category">
-                                                        <span>Category</span>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        <li/>
-                                    </c:if>
-                                </form>
-                            </ul>
-                        </li>
-                    </ul>
-                </div>
-            </div>
+                        <%@include file="vip/function.jsp" %>
             <!--**********************************
                 Sidebar end
             ***********************************-->
@@ -396,7 +338,7 @@
                                                                     <option value="0">SELECT CATEGORY</option>
                                                                     <c:forEach items="${LIST_CATEGORY}" var="category">
                                                                         <option class="dropdown-item" 
-                                                                                value="${category.categoryId}" ${category.getCategoryId() == searchedCategoryID ? 'selected' : ''}>${category.typeCategory}</option>
+                                                                                value="${category.categoryID}" ${category.categoryID == searchedCategoryID ? 'selected' : ''}>${category.categoryName}</option>
                                                                     </c:forEach>
                                                                 </select>
                                                             </div>
@@ -431,19 +373,19 @@
                                                 <form action="MainController" method="POST">
                                                     <button style="border: none; background: window">
                                                         <input type="hidden" name="btnAction" value="Details Product">
-                                                        <input name="txtProductID" type="hidden" value="${product.productId}">
-                                                        <img src="${product.productImage}" alt="not found image" class="img-fluid d-block mx-auto mb-2 border-bottom-1 ">
+                                                        <input name="txtProductID" type="hidden" value="${product.productID}">
+                                                        <img src="${product.img}" alt="not found image" class="img-fluid d-block mx-auto mb-2 border-bottom-1 ">
                                                         <div class="card-title ps-2 pe-2">
                                                             <div class="mt-3 pe-3">
                                                                 <h6 style="text-align: left; height: 20px;">${product.productName}</h6>
                                                             </div>
                                                             <div class="mt-3 pe-3">
-                                                                <h6 style="text-align: left; height: 20px;">Brand: ${product.category.typeCategory}</h6>
+                                                          
                                                             </div>
                                                             <div class="list-group list-group-flush" style="text-align: right; height: 20px;">
                                                                 <label> 
                                                                     <fmt:setLocale value = "vi_VN"/>
-                                                                    <fmt:formatNumber value = "${product.salePrice}"/> VNĐ
+                                                                    <fmt:formatNumber value = "${product.price}"/> VNĐ
                                                                 </label>
                                                             </div>
                                                         </div>

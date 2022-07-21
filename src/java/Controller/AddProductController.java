@@ -7,6 +7,7 @@ package Controller;
 
 import Define.DateUitils;
 import Define.Define;
+import Entity.Category;
 import Entity.CategoryDTO;
 import Entity.ProductDTO;
 import Model.ProductDAO;
@@ -14,6 +15,7 @@ import Model.categoryDAO;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -76,19 +78,19 @@ public class AddProductController extends HttpServlet {
 //                            String filePath = directoryPath + "/" + this.getFileName(image);
 //                            image.write(filePath);
 //                            image.write(filePath+ File.separator + fileName);
-                            product.setProductImage("assets/" + this.getFileName(image));
+                            product.setImg("assets/" + this.getFileName(image));
                         } catch (Exception e) {
                             throw new IllegalStateException("Error at Update Image");
                         }
                     }
 
                     product.setProductName(txtProductName);
-                    product.setCategoryId(selectedCategory);
-                    product.setSalePrice(txtSalePrice);
-                    product.setImportPrice(txtImportPrice);
-                    product.setQuantity(quantity);
+                    product.setCategoryID(selectedCategory);
+                    product.setPrice(txtSalePrice);
+                    product.setCost(txtImportPrice);
+                    product.setProductQuantity(quantity);
                     product.setDescription(txtDescription);
-                    product.setImportDate(dateUtils.convertExpiDate(txtImportDate));
+//                    product.setImportDate(dateUtils.convertExpiDate(txtImportDate));
                     ProductDAO productDAO = new ProductDAO();
                     boolean isSuccess = productDAO.insertProduct(product);
 
@@ -113,7 +115,7 @@ public class AddProductController extends HttpServlet {
             }
             if (url.equalsIgnoreCase(Define.CREATE_PRODUCT_PAGE)) {
                 categoryDAO categoryDAO = new categoryDAO();
-                ArrayList<CategoryDTO> listCategory = categoryDAO.getAllCategorys();
+             List<Category> listCategory = categoryDAO.getAllCategory();
                 request.setAttribute("LIST_CATEGORY", listCategory);
             }
         } catch (Exception e) {

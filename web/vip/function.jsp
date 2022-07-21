@@ -27,7 +27,7 @@
                         <ul aria-expanded="false">
                          <ul aria-expanded="false">
                                 <form action="MainController" method="POST">
-                                    <%--<c:if test="${ not empty ROLE}">--%>
+                                    <c:if test="${ not empty ROLE}">
                                         <li class="d-grid gap-2">
                                             <div class="row">
                                                 <div class="col-2"></div>
@@ -39,7 +39,8 @@
                                                 </div>
                                             </div>
                                         <li/>
-                                    <%--</c:if>--%>
+                                    </c:if>
+                                        
                                 </form>
                                 <form action="MainController" method="POST">
                                     <c:if test="${ROLE != 'ADMIN' && not empty ROLE}">
@@ -160,7 +161,16 @@
                             
                         </a>
                     </li>
-                    
+                        <li  ${ROLE != 'ADMIN' ? 'style="display: none"':''}>
+                         <a href="listcontact" aria-expanded="false">
+                            <i class="icon-globe-alt menu-icon"></i><span class="nav-text">Contact</span>
+                        </a>
+                    </li>
+                     <li  ${ROLE != 'ADMIN' ? '':'style="display: none"'}>
+                         <a href="contactus" aria-expanded="false">
+                            <i class="icon-globe-alt menu-icon"></i><span class="nav-text">Contact Us</span>
+                        </a>
+                    </li>
                    
             </div>
         </div>

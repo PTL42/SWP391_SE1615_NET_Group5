@@ -26,7 +26,7 @@ public class ProductInvoice2DAO extends ConnectDB{
     Connection conn = null;
     PreparedStatement state = null;
     ResultSet rs = null;
-     public int insertProducttoInvoice(int orderid, Map<Integer, Cart> cart) {
+    public int insertProducttoInvoice(int orderid, Map<Integer, Cart> cart) {
         int n=0;
        
             String sql = "INSERT INTO [dbo].[Product_Invoice]\n" +
@@ -48,9 +48,9 @@ public class ProductInvoice2DAO extends ConnectDB{
              for (Map.Entry<Integer, Cart> entry : cart.entrySet()) {
                  Integer id = entry.getKey();
                  Cart cart1 = entry.getValue();
-//                 state.setInt(2, cart1.getQuantity());
-//                 state.setInt(3, cart1.getProduct().getProductID());
-//                 state.setDouble(4, cart1.getProduct().getPrice());
+                 state.setInt(2, cart1.getQuantity());
+                 state.setInt(3, cart1.getProduct().getProductID());
+                 state.setDouble(4, cart1.getProduct().getPrice());
                 n=state.executeUpdate();
              }
           
@@ -62,6 +62,15 @@ public class ProductInvoice2DAO extends ConnectDB{
         }
         return n;
     }
+    
+    
+    
+    
+    
+    
+    
+    
+    
  public List<ProductInvoice> gettotalweek(int id) {
         String sql = "SELECT [quantity]\n" +
 "      ,[price]\n" +
@@ -141,6 +150,49 @@ public class ProductInvoice2DAO extends ConnectDB{
         }
         return a;
     }
+ 
+ 
+  public boolean insertOrderDetail(ProductInvoice orderDetailDTO) throws SQLException {
+        boolean isSuccess = false;
+        String sql = "INSERT INTO [dbo].[Product_Invoice]\n" +
+"           ([invoiceID]\n" +
+"           ,[quantity]\n" +
+"           ,[productID]\n" +
+"           ,[price])\n" +
+"     VALUES\n" +
+"           (?\n" +
+"           ,?\n" +
+"           ,?\n" +
+"           ,?)";
+        try {
+            conn = getConnection();
+            state = conn.prepareStatement(sql);
+            state.setInt(1, orderDetailDTO.getInvoiceID());
+            state.setInt(2, orderDetailDTO.getQuantity());
+            state.setInt(3, orderDetailDTO.getProductID());
+            state.setDouble(4, orderDetailDTO.getPrice());
+           
+            
+            if (state.executeUpdate() > 0) {
+                isSuccess = true;
+            }
+        } catch (Exception e) {
+        } finally {
+              closePrepareStatement(state);
+            closeConnection(conn);
+        }
+        return isSuccess;
+    }
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
      public static void main(String[] args) {
         ProductInvoice2DAO dao2=new ProductInvoice2DAO();
 //        Map<Integer,Cart> cart=new Map<Integer, Cart>();

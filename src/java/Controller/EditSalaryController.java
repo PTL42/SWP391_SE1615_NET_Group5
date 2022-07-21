@@ -5,13 +5,16 @@
  */
 package Controller;
 
-import Entity.Cart;
-import Entity.Product;
-import Model.ProductDAO;
+import Entity.Account;
+import Entity.SalaryTotal;
+import Model.EmployeeDAO;
+import Model.SalaryDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.sql.Date;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -23,8 +26,8 @@ import javax.servlet.http.HttpSession;
  *
  * @author Admin
  */
-@WebServlet(name = "addtocart3", urlPatterns = {"/addtocart3"})
-public class addtocart2 extends HttpServlet {
+@WebServlet(name = "EditSalaryController", urlPatterns = {"/editsalary"})
+public class EditSalaryController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -41,50 +44,44 @@ public class addtocart2 extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             HttpSession session = request.getSession();
-            Integer n = (Integer) session.getAttribute("n");
-
             Object a = session.getAttribute("account");
             if (a != null) {
+                Account account = (Account) a;
 
-                ProductDAO daopro = new ProductDAO();
-                String tid = request.getParameter("id");
-                int proid = Integer.parseInt(tid);
-                Product k = daopro.getProductbyID(proid);
-                if (k == null) {
-                    session.setAttribute("n1", 5);
-                    response.sendRedirect((String) session.getAttribute("url"));
-                } else {
-                    Map<Integer, Cart> cart = (Map<Integer, Cart>) session.getAttribute("cart");
-                    if (cart == null) {
-                        cart = new LinkedHashMap<>();
-                    }
-                    if (cart.containsKey(proid)) {
-                        int oldQuantity = cart.get(proid).getQuantity();
-                        cart.get(proid).setQuantity(oldQuantity + 1);
-                    } else {
-                        Product pro = new ProductDAO().getProductbyID(proid);
-                        cart.put(proid, Cart.builder().product(pro).quantity(1).build());
-                        System.out.println(cart);
+  
+                SimpleDateFormat dt3 = new SimpleDateFormat("dd-MM-yyyy");
+                SimpleDateFormat moth = new SimpleDateFormat("MM");
+                SimpleDateFormat year = new SimpleDateFormat("yyyy");
+                LocalDate date = java.time.LocalDate.now();
+                String date1 = date.toString();
+                    
 
-                    }
-                    double total = 0;
-                    for (Map.Entry<Integer, Cart> entry : cart.entrySet()) {
-                        Integer key = entry.getKey();
-                        Cart carts = entry.getValue();
-                        total += carts.getQuantity() * carts.getProduct().getPrice();
+                Date date2 = Date.valueOf(date1);
+                String date3 = dt3.format(date2);
+                  int mothint=Integer.parseInt(moth.format(date2));
+                 int yearint=Integer.parseInt(year.format(date2));
+                SalaryDAO daos= new SalaryDAO();
+                EmployeeDAO daoem = new EmployeeDAO();
+                List<SalaryTotal> listem = daos.listAllSalaryTotal(mothint,yearint);
+                         String submit = request.getParameter("submit");
 
-                    }
-
-                    System.out.println(cart.size());
-                    session.setAttribute("cart", cart);
-                             session.setAttribute("n1", 0);
-                    session.setAttribute("n", n);
-                    session.setAttribute("total2", total);
-                    response.sendRedirect((String) session.getAttribute("url"));
+                if (submit == null) {
+                  request.setAttribute("listem", listem);
+                    request.setAttribute("date3", date3);
+                    request.getRequestDispatcher("checkdd_1_1.jsp").forward(request, response);
+                            }else{
+                    double salary2=Double.parseDouble(request.getParameter("quantity"));
+                    int id=Integer.parseInt(request.getParameter("id"));
+                    int ha=daos.updateSalary(salary2,id);
+                    listem = daos.listAllSalaryTotal(mothint,yearint);
+                    request.setAttribute("ha", ha);
+                        request.setAttribute("listem", listem);
+                    request.setAttribute("date3", date3);
+                    request.getRequestDispatcher("checkdd_1_1.jsp").forward(request, response);
+                    
                 }
-            } else {
+            }else{
                 response.sendRedirect("login.jsp");
-//            response.sendRedirect("ControllerProduct");
             }
         }
     }

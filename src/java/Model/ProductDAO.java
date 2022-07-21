@@ -400,35 +400,40 @@ private void closeConnection() throws Exception {
         return listProduct;
     }
 
-//    public Boolean insertProduct(ProductDTO product) throws Exception {
-//        boolean isSuccess = false;
-//        String sql = "INSERT INTO tblProduct"
-//                + " (product_name, description, sale_price, import_price, quantity,"
-//                + " status, import_date, category_id, product_image)"
-//                + " VALUES (?,?,?,?,?,?,?,?,?)";
-//        try {
-//            conn = getConnection();
-//            state = conn.prepareStatement(sql);
-//            state.setString(1, product.getProductName());
-//            state.setString(2, product.getDescription());
-//            state.setFloat(3, product.getSalePrice());
-//            state.setFloat(4, product.getImportPrice());
-//            state.setInt(5, product.getQuantity());
-//            state.setBoolean(6, Boolean.TRUE);
-//            state.setTimestamp(7, java.sql.Timestamp.valueOf(product.getImportDate()));
-//            state.setInt(8, product.getCategoryId());
-//            state.setString(9, product.getProductImage());
-//            state.executeUpdate();
-//            isSuccess = true;
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        } finally {
-//            closeConnection();
-//        }
-//        return isSuccess;
-//
-//    }
-//
+    public Boolean insertProduct(ProductDTO product) throws Exception {
+        boolean isSuccess = false;
+        String sql = "INSERT INTO [Product]"
+                + " ( \n" +
+"      [productName]\n" +
+"      ,[productQuantity]\n" +
+"      ,[cost]\n" +
+"      ,[price]\n" +
+"      ,[img]\n" +
+"      ,[description]\n" +
+"      ,[categoryID])"
+                + " VALUES (?,?,?,?,?,?,?)";
+        try {
+            conn = getConnection();
+            state = conn.prepareStatement(sql);
+            state.setString(1, product.getProductName());
+              state.setInt(2, product.getProductQuantity());
+              state.setFloat(3, product.getCost());
+              state.setFloat(4, product.getPrice());
+            state.setString(5, product.getImg());
+            state.setString(6, product.getDescription());
+            state.setInt(7, product.getCategoryID());
+          
+            state.executeUpdate();
+            isSuccess = true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            closeConnection();
+        }
+        return isSuccess;
+
+    }
+
     public ProductDTO getProductByID(int productID){
         ProductDTO product = new ProductDTO();
         CategoryDTO category = new CategoryDTO();
@@ -529,8 +534,8 @@ private void closeConnection() throws Exception {
         return quantity;
     }
     
-    public void subQuantity(int productId, int subQuantity) throws Exception {
-        String sql = "UPDATE tblProduct SET quantity = quantity - ? where product_id = ?";
+    public void subQuantity(int productId, int subQuantity)  {
+        String sql = "UPDATE tblProduct SET productQuantity = productQuantity - ? where productID = ?";
         try {
             conn = getConnection();
             state = conn.prepareStatement(sql);
@@ -539,7 +544,8 @@ private void closeConnection() throws Exception {
             state.executeUpdate();
         } catch (Exception e) {
         } finally {
-            closeConnection();
+               closePrepareStatement(state);
+            closeConnection(conn);
         }
     }
 

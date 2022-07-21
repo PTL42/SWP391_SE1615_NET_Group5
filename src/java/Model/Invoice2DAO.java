@@ -28,7 +28,7 @@ public class Invoice2DAO extends ConnectDB {
 Connection conn = null;
     PreparedStatement state = null;
     ResultSet rs = null;
-     public int addInvoice(Invoice i) {
+      public int addInvoice(Invoice i) {
         int n = 0;
         String sql = "INSERT INTO [dbo].[Invoice]\n"
                 + "           ([createdDate]\n"
@@ -62,6 +62,7 @@ Connection conn = null;
         }
         return n;
     }
+
 
      public int invoiceidnew() {
          int n=0;

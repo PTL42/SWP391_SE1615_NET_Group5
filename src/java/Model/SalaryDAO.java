@@ -31,7 +31,7 @@ public class SalaryDAO extends ConnectDB {
         String sql = "INSERT INTO [dbo].[Salary]\n"
                 + "           ([employeeID]\n"
                 + "           ,[state]\n"
-                + "           ,[salary]\n"
+                + "           ,[salarytoday]\n"
                 + "           ,[from]\n"
                 + "           ,[to]\n"
                 + "           ,[to]\n"
@@ -62,15 +62,30 @@ public class SalaryDAO extends ConnectDB {
         return n;
     }
 
-    public int updateSalary(Salary s) {
+    public int updateSalarystatus(int s ,int id) {
         int n = 0;
-        String sql = "update Salary set Salary=? ,state=? where employeeID=?";
+        String sql = "update Salary set state=? where employeeID=?";
         try {
             conn = getConnection();
             state = conn.prepareStatement(sql);
-            state.setInt(3, s.getEmployeeID());
-            state.setInt(2, s.getState());
-            state.setDouble(1, s.getSalary());
+            state.setInt(2, id);
+            state.setInt(1, s);
+           
+            n = state.executeUpdate();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return n;
+    }
+     public int updateSalary(double salary,int id) {
+        int n = 0;
+        String sql = "update Salary set [salarytoday]=? where employeeID=?";
+        try {
+            conn = getConnection();
+            state = conn.prepareStatement(sql);
+            state.setInt(2, id);
+ 
+            state.setDouble(1, salary);
             n = state.executeUpdate();
         } catch (SQLException ex) {
             ex.printStackTrace();
@@ -94,7 +109,21 @@ public class SalaryDAO extends ConnectDB {
         }
         return n;
     }
-
+public int updateSalarytotal(int id) {
+        int n = 0;
+        String sql = "UPDATE [dbo].[Salary] \n" +
+"                  set\n" +
+"                     [salaryTotal] =salarytoday*Totalworking\n" +
+"                 WHERE employeeID=" + id;
+        try {
+            conn = getConnection();
+            state = conn.prepareStatement(sql);
+            n = state.executeUpdate();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return n;
+    }
     public List<Salary> listAllSalary() {
 
         String sql = "select * from Salary";
@@ -121,18 +150,18 @@ public class SalaryDAO extends ConnectDB {
         return vector;
     }
 
-    public List<SalaryTotal> listAllSalaryTotal() {
+    public List<SalaryTotal> listAllSalaryTotal(int moth,int year) {
 
-        String sql = "SELECT e.[employeeID]\n"
-                + "      ,e.[employeeName]\n"
-                + "	  ,[img]\n"
-                + "      ,[state]\n"
-                + "      ,[salarytoday]\n"
-                + "      ,[from]\n"
-                + "      ,[to]\n"
-                + "      ,[Totalworking]\n"
-                + "      ,[salaryTotal]\n"
-                + "  FROM [Salary] s ,Employees e where s.employeeID=e.employeeID";
+        String sql = "SELECT e.[employeeID]\n" +
+"                      ,e.[employeeName]\n" +
+"                  ,[img]\n" +
+"                      ,[state]\n" +
+"                     ,[salarytoday]\n" +
+"                      ,[from]\n" +
+"                     ,[to]\n" +
+"                     ,[Totalworking]\n" +
+"                     ,[salaryTotal]\n" +
+"                 FROM [Salary] s ,Employees e where s.employeeID=e.employeeID and MONTH(s.[to])="+moth+" and YEAR(s.[to])="+year;
         List<SalaryTotal> vector = new ArrayList<SalaryTotal>();
         try {
             conn = getConnection();
@@ -185,9 +214,10 @@ public class SalaryDAO extends ConnectDB {
 
     public static void main(String[] args) {
         SalaryDAO dao = new SalaryDAO();
-        List<Salary> vector = dao.listAllSalary();
-        for (Salary salary : vector) {
-            System.out.println(salary);
-        }
+//        List<SalaryTotal> vector = dao.listAllSalaryTotal(7, 2022);
+//        for (SalaryTotal salary : vector) {
+//            System.out.println(salary);
+//        }
+         System.out.println(dao.updateSalarystatus(1, 1));
     }
 }

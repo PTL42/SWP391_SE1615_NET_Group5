@@ -9,9 +9,11 @@ import Define.Define;
 import Entity.Account;
 import Entity.Category;
 import Entity.CategoryDTO;
+import Entity.Employees;
 import Entity.ProductDTO;
 import Entity.UserDTO;
 import Model.AccountDAO;
+import Model.EmployeeDAO;
 import Model.ProductDAO;
 import Model.UserDAO;
 import Model.categoryDAO;
@@ -57,6 +59,7 @@ public class LoginController extends HttpServlet {
             boolean remember = request.getParameter("remember") != null;
             AccountDAO dao = new AccountDAO();
             Account a = dao.getAccount(u, p);
+          
 //            out.println(cus);
             String service = request.getParameter("do");
 //            out.print(service);
@@ -90,11 +93,18 @@ public class LoginController extends HttpServlet {
                         response.addCookie(passcookie);
                     }
                     if (a.getRole() == 0) {
+                            EmployeeDAO daoem = new EmployeeDAO();
+                int n=0;
+                Employees e = daoem.getEmpployeesbyUsername(a.getUsername());
                         session.setAttribute("account", a);
                         session.setAttribute("nameacc", a.getUsername());
+                            session.setAttribute("emp", e);
 //               
                      response.sendRedirect("HomePageEmployeeController");
                     } else if (a.getRole() == 1) {
+                            EmployeeDAO daoem = new EmployeeDAO();
+                int n=0;
+                Employees e = daoem.getEmpployeesbyUsername(a.getUsername());
                         // update login with role admin and customer
                         session.setAttribute("USER", a.getUsername());
                         session.setAttribute("EMAIL", a.getEmail());
@@ -112,7 +122,9 @@ public class LoginController extends HttpServlet {
                         categoryDAO categoryDAO = new categoryDAO();
                         List<Category> listCategory = categoryDAO.getAllCategory();
                         request.setAttribute("LIST_CATEGORY", listCategory);
+                            session.setAttribute("emp", e);
                           request.getRequestDispatcher(url).forward(request, response);
+                          
                     }  else if (a.getRole() == 3) {
                         // update login with role admin and customer
                         session.setAttribute("USER", a.getUsername());
@@ -131,7 +143,9 @@ public class LoginController extends HttpServlet {
                         categoryDAO categoryDAO = new categoryDAO();
                         List<Category> listCategory = categoryDAO.getAllCategory();
                         request.setAttribute("LIST_CATEGORY", listCategory);
+//                        session.setAttribute("emp", e);
                           request.getRequestDispatcher(url).forward(request, response);
+                          
                     }
                 }
             }

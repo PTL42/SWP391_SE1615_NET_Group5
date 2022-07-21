@@ -116,20 +116,25 @@ public class OrderDAO extends ConnectDB implements Serializable {
         return listOrder;
     }
 
-    public Integer insertOrder(OrderDTO orderDTO) throws Exception {
+    public Integer insertOrder(int idcus) {
         DateUitils dateUtils = new DateUitils();
         int idOrder = 0;
-        String sql = "INSERT INTO tblOrder(user_id, order_date, total_price)"
-                + " OUTPUT inserted.order_id values(?,?,?)";
+        String sql = "INSERT INTO [dbo].[Invoice]\n" +
+"           ([createdDate]\n" +
+"           ,[employeeID]\n" +
+"           ,[customerID])"
+                + " OUTPUT inserted.invoiceID values(?,?,?)";
         try {
             conn = getConnection();
             preStm = conn.prepareStatement(sql);
-            preStm.setInt(1, orderDTO.getUserId());
-            preStm.setTimestamp(2, java.sql.Timestamp.valueOf(dateUtils.getCurrentDate()));
-            preStm.setFloat(3, orderDTO.getTotalPrice());
+           
+            preStm.setTimestamp(1, java.sql.Timestamp.valueOf(dateUtils.getCurrentDate()));
+            
+            preStm.setInt(1, 1);
+            preStm.setInt(1, idcus);
             rs = preStm.executeQuery();
             if (rs.next()) {
-                idOrder = rs.getInt("order_id");
+                idOrder = rs.getInt("invoiceID");
             }
         } catch (Exception e) {
         } finally {

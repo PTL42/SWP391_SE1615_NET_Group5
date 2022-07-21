@@ -81,13 +81,12 @@
                                         </div>
                                          
                                     </div>
-                                       <div class="col-md-4">
-                                           <input style="margin-bottom: -50px"  class="form-control input-rounded" type="submit" name="submit" value="Search">
+                                       <div class="col-md-2">
+                                           <input style="margin-top: 25px"  class="form-control input-rounded" type="submit" name="submit" value="Search">
                                        
                                        </div>
                                        <div class="col-md-2">
-                                           <a class="form-control input-rounded" href="searchprofit">All</a>
-                                       
+                                           <a  style="margin-top: 25px; text-align: center;" class="form-control input-rounded" href="searchprofit">All</a>
                                        </div>
                                     
                                 </div>

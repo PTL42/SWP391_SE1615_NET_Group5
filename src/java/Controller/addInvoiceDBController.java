@@ -55,7 +55,7 @@ public class addInvoiceDBController extends HttpServlet {
             HttpSession session = request.getSession();
             Object a = session.getAttribute("account");
             Object b = session.getAttribute("idcus");
-          if (a != null) {
+            if (a != null) {
                 Account account = (Account) a;
                 EmployeeDAO daoem = new EmployeeDAO();
 //                    int idcus=(int) b;
@@ -70,13 +70,7 @@ public class addInvoiceDBController extends HttpServlet {
                     if (submit != null) {
                         Map<Integer, Cart> cart = (Map<Integer, Cart>) session.getAttribute("cart");
 
-                        double total = 0;
-                        for (Map.Entry<Integer, Cart> entry : cart.entrySet()) {
-                            Integer key = entry.getKey();
-                            Cart carts = entry.getValue();
-//                            total += carts.getQuantity() * carts.getProduct().getPrice();
-
-                        }
+                     
                         Invoice2DAO dao = new Invoice2DAO();
                         ProductInvoice2DAO dao2 = new ProductInvoice2DAO();
                         ProductDAO daopro = new ProductDAO();
@@ -87,7 +81,12 @@ public class addInvoiceDBController extends HttpServlet {
                         if (idcus == 0) {
                             session.setAttribute("n1", 6);
                             response.sendRedirect((String) session.getAttribute("url"));
-                        } else {
+                        } if(cart==null){
+                              session.setAttribute("n1", 7);
+                            response.sendRedirect((String) session.getAttribute("url"));
+                        }
+                        
+                        else {
 
                             int n = dao.addInvoice(new Invoice(date2, e.getEmployeeID(), idcus));
 //                     RequestDispatcher dispatcher2 = request.getRequestDispatcher("/email-compose.html");
@@ -99,16 +98,16 @@ public class addInvoiceDBController extends HttpServlet {
                                 for (Map.Entry<Integer, Cart> entry : cart.entrySet()) {
                                     Integer key = entry.getKey();
                                     Cart carts = entry.getValue();
-                                //    int quantity = carts.getQuantity();
+                                    int quantity = carts.getQuantity();
                                     for (Product product : listpro) {
                                         if (cart.containsKey(product.getProductID())) {
-//                                            daopro.updateaddtocart(product.getProductQuantity() - quantity, product.getProductID());
+                                            daopro.updateaddtocart(product.getProductQuantity() - quantity, product.getProductID());
                                         }
                                     }
 
                                 }
                                 session.removeAttribute("cart");
-                                session.setAttribute("total", 0);
+                                session.setAttribute("total2", 0);
                                   session.setAttribute("n1", 8);
                                 response.sendRedirect("HomePageEmployeeController");
 

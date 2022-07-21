@@ -11,12 +11,6 @@
         <!-- Custom Stylesheet -->
         <link href="./plugins/toastr/css/toastr.min.css" rel="stylesheet">
         <link href="css/style.css" rel="stylesheet">
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
-
- 
-
-</script>
-
 
     </head>
 
@@ -175,6 +169,23 @@
 
                             </div>
                         </div>
+                        <div ${sessionScope.n1 == 7 ? 'style="display:block;"' : 'style="display:none;"'} >
+                            <div id="messloi3" class="" style="
+                                 color:white;
+                                 border-radius: 25px;
+                                 background: red;
+                                 padding: 20px; 
+                                 width: 300px;
+                                 ">
+                                <div  class="" aria-live="polite" style=""><div class="toast-progress" style="width: 2.6%;
+                                                                                color: red;">
+                                    </div><button type="button" class="toast-close-button" role="button" onclick="vip7()">×</button>
+                                    <div class="toast-title">There are no products in the cart!</div><div class="toast-message">This Is Success Message</div>
+
+                                </div>
+
+                            </div>
+                        </div>
                         <script>
 
                             function vip3() {
@@ -203,6 +214,29 @@
                             function vip6() {
 
                                 document.getElementById("messloi2").style.display = "none";
+
+                            }
+
+                            var thoiluong = 5;
+                            setInterval(function () {
+                                thoiluong--;
+                                sophut = Math.floor(thoiluong / 60);
+                                sogiay = thoiluong % 60;
+
+
+
+                                if (thoiluong <= 0) {
+                                    thoiluong = 0;
+                                    document.getElementById("messloi").style.display = "none";
+
+                                }
+                            }, 1000);
+                        </script>
+                              <script>
+
+                            function vip7() {
+
+                                document.getElementById("messloi3").style.display = "none";
 
                             }
 
@@ -516,7 +550,7 @@
             let text2 = document.getElementById("myInput").textContent;
             console.log(text2);
     </script>
- 
+
 
 </body>
 

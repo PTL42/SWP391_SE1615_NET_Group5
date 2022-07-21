@@ -58,8 +58,16 @@
                             <div class="card">
                                 <div class="card-body">
                                     <div class="form-validation">
-                                    <h4>List Customer</h4>
+                                    <h4>List Employee</h4>
                                 </div>
+                                    <form class="form-valide" action="SearchEmployee" method="post">
+                                <div class="form-group row">
+                                    <div class="align-center col-lg-6">
+                                        <input type="text" maxlength="99" class="form-control" id="val-website" name="search" value="${search}">
+                                    </div>
+                                    <button type="summit" class="btn btn-primary" >Search</button>
+                                </div>
+                                </form>
                                 <div class="table-responsive">
                                     <table class="table">
                                         <thead>

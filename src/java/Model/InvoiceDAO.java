@@ -5,6 +5,7 @@
  */
 package Model;
 
+import Define.DateUitils;
 import Entity.Invoice;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -26,13 +27,9 @@ public class InvoiceDAO  extends ConnectDB{
     Connection conn = null;
     PreparedStatement state = null;
     ResultSet rs = null;
-    public List<Invoice> getAllInvoice() {
+  public List<Invoice> getAllInvoice() {
         try {
-            String query = "SELECT  [invoiceID]\n" +
-"      ,[createdDate]\n" +
-"      ,[employeeID]\n" +
-"      ,[customerID]\n" +
-"  FROM [ShoppingOnline].[dbo].[Invoice]";
+            String query = "select * from Invoice";
             conn = getConnection();
             state = conn.prepareStatement(query);
           
@@ -48,7 +45,6 @@ public class InvoiceDAO  extends ConnectDB{
         }
         return null;
     }
-    
     public List<Invoice> getAllInvoicetop3() {
         try {
             String query = "select top(3) * from Invoice order by invoiceID desc";
@@ -88,6 +84,33 @@ public class InvoiceDAO  extends ConnectDB{
         } catch (Exception e) {
         }
         return null;
+    }
+        public Integer insertOrder(int idcus) {
+        DateUitils dateUtils = new DateUitils();
+        int idOrder = 0;
+        String sql = "INSERT INTO [dbo].[Invoice]\n" +
+"           ([createdDate]\n" +
+"           ,[employeeID]\n" +
+"           ,[customerID])"
+                + " OUTPUT inserted.invoiceID values(?,?,?)";
+        try {
+            conn = getConnection();
+            state = conn.prepareStatement(sql);
+           
+            state.setTimestamp(1, java.sql.Timestamp.valueOf(dateUtils.getCurrentDate()));
+            
+            state.setInt(2, 1);
+            state.setInt(3, idcus);
+            rs = state.executeQuery();
+            if (rs.next()) {
+                idOrder = rs.getInt("invoiceID");
+            }
+        } catch (Exception e) {
+        } finally {
+                  closePrepareStatement(state);
+            closeConnection(conn);
+        }
+        return idOrder;
     }
      public int addInvoice(Invoice i){
         int n=0;

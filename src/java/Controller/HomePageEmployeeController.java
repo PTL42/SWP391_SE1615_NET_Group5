@@ -85,7 +85,7 @@ public class HomePageEmployeeController extends HttpServlet {
                 List<String> listcus = daocus.getAllNameCustomer();
                 String namecus = request.getParameter("myCountry");
                 int idinvoicenew = daoin.invoiceidnew();
-              
+                
                 if (service == null) {
                     service = "ListallProduct";
                     n = 1;
@@ -94,7 +94,7 @@ public class HomePageEmployeeController extends HttpServlet {
                    
                     request.setAttribute("listcate", listcate);
                     session.setAttribute("n", n);
-                    session.setAttribute("total", total);
+                    session.setAttribute("total2", total);
                     session.setAttribute("url", "HomePageEmployeeController?do=ListallProduct");
                     session.setAttribute("emp", e);
                     session.setAttribute("list2", list);
@@ -141,7 +141,7 @@ public class HomePageEmployeeController extends HttpServlet {
 
                     request.setAttribute("listcate", listcate);
                     session.setAttribute("n", n);
-                    session.setAttribute("total", total);
+                    session.setAttribute("total2", total);
                     session.setAttribute("emp", e);
                     session.setAttribute("list2", list);
                     session.setAttribute("listcus", listcus);
@@ -164,7 +164,7 @@ request.getRequestDispatcher("addinvoice.jsp").forward(request, response);
                         request.setAttribute("cate", cate);
 
                         session.setAttribute("url", "HomePageEmployeeController?do=ListSearchProduct&cate=" + cate);
-                    } if (searchname.equals("") != true && cate.equals("all") != true) {
+                    } else {
                         int catecon = Integer.parseInt(cate);
                         list = dao3.getAllProductbycateidandname(catecon, searchname);
                         request.setAttribute("searchname", searchname);
@@ -178,7 +178,7 @@ request.getRequestDispatcher("addinvoice.jsp").forward(request, response);
 
                     request.setAttribute("listcate", listcate);
                     session.setAttribute("n", n);
-                    session.setAttribute("total", total);
+                    session.setAttribute("total2", total);
                     session.setAttribute("emp", e);
                     session.setAttribute("list2", list);
                     session.setAttribute("listcus", listcus);

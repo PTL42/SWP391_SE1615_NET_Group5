@@ -6,14 +6,8 @@
 package Controller;
 
 import Entity.Account;
-import Entity.Employees;
-import Entity.Invoice;
-import Entity.Product;
-import Entity.Shippers;
-import Model.EmployeeDAO;
-import Model.InvoiceDAO;
-import Model.ProductDAO;
-import Model.ShippersDAO;
+import Entity.ContactUs;
+import Model.ContactDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
@@ -29,8 +23,8 @@ import javax.servlet.http.HttpSession;
  *
  * @author Admin
  */
-@WebServlet(name = "HomeController", urlPatterns = {"/HomeController"})
-public class HomeController extends HttpServlet {
+@WebServlet(name = "ListContactController", urlPatterns = {"/listcontact"})
+public class ListContactController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -44,7 +38,7 @@ public class HomeController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try  {
+         try  {
             /* TODO output your page here. You may use following sample code. */
             HttpSession session = request.getSession();
             
@@ -52,61 +46,18 @@ public class HomeController extends HttpServlet {
             Object a = session.getAttribute("account");
                   Account account = (Account) a;
             if (a != null &&account.getRole()==1) {
-//                Account account = (Account) a;
-                EmployeeDAO dao = new EmployeeDAO();
-                int n=0;
-                Employees e = dao.getEmpployeesbyUsername(account.getUsername());
-                if (service == null) {
-                    service = "ListInvoice";
-                    n=1;
-                }
-                if (service.equals("ListInvoice")) {
-                    InvoiceDAO dao2 = new InvoiceDAO();
-                    n=1;
-                    List<Invoice> list = dao2.getAllInvoice();
-                    request.setAttribute("listI", list);
-                    session.setAttribute("emp", e);
-                    session.setAttribute("n", n);
-//                response.sendRedirect("index.jsp");
-                    request.getRequestDispatcher("index.jsp").forward(request, response);
-                }
-                if (service.equals("updateProduct")) {
-                    
-                }
-                if (service.equals("ListProduct")) {
-                    ProductDAO dao3 = new ProductDAO();
-                    n=2;
-                    List<Product> list = dao3.getAllProduct();
-                    request.setAttribute("listP", list);
-                    session.setAttribute("emp", e);
-                    session.setAttribute("n", n);
-                    
-//                response.sendRedirect("index.jsp");
-                    request.getRequestDispatcher("index.jsp").forward(request, response);
-                }
-                if (service.equals("ListEmployees")) {
-                    ProductDAO dao3 = new ProductDAO();
-                    n=3;
-                    List<Product> list = dao3.getAllProduct();
-                    request.setAttribute("listP", list);
-                    session.setAttribute("emp", e);
-                    session.setAttribute("n", n);
-                    
-//                response.sendRedirect("index.jsp");
-                    request.getRequestDispatcher("index.jsp").forward(request, response);
-                }
-                if (service.equals("ListShippers")) {
-                    ShippersDAO daoship = new ShippersDAO();
-                    n=4;
-                    List<Shippers> list = daoship.listAllShippers();
-                      request.setAttribute("listS", list);
-                    session.setAttribute("emp", e);
-                    session.setAttribute("n", n);
-                    session.setAttribute("k11", 0);
-//                response.sendRedirect("index.jsp");
-                    request.getRequestDispatcher("index.jsp").forward(request, response);
-                }
-            } else {
+            /* TODO output your page here. You may use following sample code. */
+            
+            if (service == null) {
+                service = "List";
+            }
+            if (service.equals("List")) {
+                     ContactDAO dao=new ContactDAO();
+                     List<ContactUs> list=dao.getAllContact();
+                     session.setAttribute("list", list);
+                     request.getRequestDispatcher("ListContact.jsp").forward(request, response);
+            }
+        } else {
                 response.sendRedirect("login.jsp");
 //            response.sendRedirect("ControllerProduct");
             }
@@ -116,6 +67,7 @@ public class HomeController extends HttpServlet {
             RequestDispatcher dispatcher2 = request.getRequestDispatcher("/page-error-500.html");
             dispatcher2.forward(request, response);
         }
+         
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
