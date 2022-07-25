@@ -55,7 +55,7 @@ public class ShippersController extends HttpServlet {
                 Employees e = dao.getEmpployeesbyUsername(account.getUsername());
                 ShippersDAO daos = new ShippersDAO();
                 if (service.equals("ListSearchShippers")) {
-                    String name = request.getParameter("searchnshippers");
+                    String name = request.getParameter("searchnshippers").trim();
                   
                   List<Shippers> list=daos.searchnameShippers(name);
                     ShippersDAO daoship = new ShippersDAO();

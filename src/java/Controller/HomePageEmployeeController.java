@@ -132,8 +132,8 @@ public class HomePageEmployeeController extends HttpServlet {
 
                 if (service.equals("ListSearchProduct")) {
                     n = 2;
-                    String searchname = request.getParameter("searchname");
-                    String cate = request.getParameter("cate");
+                    String searchname = request.getParameter("searchname").trim();
+                    String cate = request.getParameter("cate").trim();
                     if (searchname.equals("") && cate.equals("all")) {
                         list = dao3.getAllProduct();
                               session.setAttribute("searchname2", searchname);

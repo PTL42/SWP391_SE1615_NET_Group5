@@ -74,9 +74,11 @@ public class ListCustomer extends HttpServlet {
                   AccountDAO daoacc =new AccountDAO();
                  String id=request.getParameter("sid");
                  int id2=Integer.parseInt(id);
+                        Customer CUS=daocus.getCustomerByID(id);
+                            daoacc.deleteacc(CUS.getUsername());
                     daocus.DeleteCustomer(id2);
-                    Customer CUS=daocus.getCustomerByID(id);
-                    daoacc.deleteacc(CUS.getUsername());
+                   
+                
                    request.setAttribute("add", 1);
                       List<Customer> list = daocus.getAllCustomer();
           request.setAttribute("List", list);

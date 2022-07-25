@@ -41,7 +41,7 @@ public class VerifyController extends HttpServlet {
             /* TODO output your page here. You may use following sample code. */
             HttpSession session = request.getSession();
            String r=(String) session.getAttribute("random");
-            String code = request.getParameter("authcode");
+            String code = request.getParameter("authcode").trim();
 
             if(code.equals(r)){
                 out.println("Verification Done");

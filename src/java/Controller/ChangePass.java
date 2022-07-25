@@ -43,19 +43,19 @@ public class ChangePass extends HttpServlet {
             Object a = session.getAttribute("account");
             if (a != null) {
                 Account account = (Account) a;
-                String pass = request.getParameter("confirm").trim();
-                String passo = request.getParameter("passwordoder").trim();
+                String pass = request.getParameter("confirm");
+                String passo = request.getParameter("passwordoder");
                 
                 AccountDAO dao = new AccountDAO();
                 if (passo != null) {
-                    Account b = dao.getAccount(account.getUsername(), passo);
+                    Account b = dao.getAccount(account.getUsername(), passo.trim());
                     if (b == null) {
                         String mess = ("PasswordOld is wrong");
                         request.setAttribute("mess", mess);
                         request.setAttribute("n", 0);
                         request.getRequestDispatcher("changepass.jsp").forward(request, response);
                     } else {
-                        int n = dao.ChangePassword(account.getUsername(), pass);
+                        int n = dao.ChangePassword(account.getUsername(), pass.trim());
                         if (n > 0) {
                             String mess = ("Change password successfully");
                             request.setAttribute("mess", mess);

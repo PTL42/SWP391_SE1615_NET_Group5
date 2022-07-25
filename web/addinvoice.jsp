@@ -295,7 +295,7 @@
 
                                         </c:forEach>
                                     </table>
-                                    <h1>Total:${total}</h1>
+                                    <h1>Total:${total2}VND</h1>
                                     <!-- row -->
 
                                     <a href="removeall" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete ?')" style="" xpath="1">Delete All</a> 
