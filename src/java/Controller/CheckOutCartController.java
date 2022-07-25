@@ -9,12 +9,14 @@ import Define.Define;
 import Entity.Account;
 import Entity.CategoryDTO;
 import Entity.Customer;
+import Entity.Delivery;
 import Entity.Invoice;
 import Entity.OrderDTO;
 import Entity.OrderDetailsDTO;
 import Entity.ProductDTO;
 import Entity.ProductInvoice;
 import Model.CustomerDAO;
+import Model.DeliveryaddressDAO;
 import Model.Invoice2DAO;
 import Model.InvoiceDAO;
 import Model.OrderDAO;
@@ -70,6 +72,7 @@ public class CheckOutCartController extends HttpServlet {
             String phoneNumber = new String(request.getParameter("txtPhoneNumber").getBytes("iso-8859-1"), "UTF-8").trim();
             String fullName = new String(request.getParameter("txtFullName").getBytes("iso-8859-1"), "UTF-8").trim();
             String typeShipping = request.getParameter("selectType");
+            int idship = Integer.parseInt(typeShipping);
 
             UserDAO userDAO = new UserDAO();
             String email = (String) session.getAttribute("EMAIL");
@@ -84,6 +87,7 @@ public class CheckOutCartController extends HttpServlet {
             int insertedOrderID = dao.insertOrder(cus.getCustomerID());
             if (insertedOrderID != 0) {
              ProductInvoice2DAO dao2 = new ProductInvoice2DAO();
+             DeliveryaddressDAO daode = new DeliveryaddressDAO();
                 for (ProductDTO f : cart) {
                    ProductInvoice detailDTO = new ProductInvoice();
                     detailDTO.setInvoiceID(insertedOrderID);
@@ -100,6 +104,9 @@ public class CheckOutCartController extends HttpServlet {
                     // minus quantity of product when 
                     productDAO.subQuantity(f.getProductID(), f.getProductQuantity());
                 }
+                Delivery u=new Delivery(insertedOrderID,cus.getCustomerName(),phoneNumber, address, idship, "Not Shipped");
+                daode.insertDelivery(u, insertedOrderID);
+                
                 session.removeAttribute("CART");
                 request.setAttribute("CHECK_OUT_CART_MSG", "Your order has been accepted");
             }

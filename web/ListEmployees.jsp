@@ -53,6 +53,12 @@
             <!-- row -->
 
            <div class="container-fluid">
+                <c:if test="${not empty add}">
+                        <div class="alert alert-primary alert-dismissible fade show" role="alert">
+                            <strong>Note:</strong> <span font-weight-semi-bold text-capitalize style="color: black">DELETE SUCCESS</span>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    </c:if>
                     <div class="row justify-content-center">
                         <div class="col-lg-12">
                             <div class="card">
@@ -61,6 +67,7 @@
                                     <h4>List Employee</h4>
                                 </div>
                                     <form class="form-valide" action="SearchEmployee" method="post">
+                                        
                                 <div class="form-group row">
                                     <div class="align-center col-lg-6">
                                         <input type="text" maxlength="99" class="form-control" id="val-website" name="search" value="${search}">
@@ -68,6 +75,8 @@
                                     <button type="summit" class="btn btn-primary" >Search</button>
                                 </div>
                                 </form>
+                                     <form class="form-valide" action="ListEmployees" method="post">
+                                        <input type="hidden" name="do" value="ListAll">
                                 <div class="table-responsive">
                                     <table class="table">
                                         <thead>
@@ -100,16 +109,17 @@
                                             </tbody><!--
                                         </c:forEach> -->
                                     </table>
+                                    
                                     <script>
                                         function Myfuntion(id){
                                             var op = confirm('Are you sure to delete');
                                             if(op=== true){
-                                                window.location.href = 'DeleteEmployee?sid='+id;
+                                                window.location.href = 'ListEmployees?do=DeleteEmployees&sid='+id;
                                             }
                                         }
                                     </script>
                                 </div>
-
+                                     </form>
                             </div>
                         </div>
                     </div>              

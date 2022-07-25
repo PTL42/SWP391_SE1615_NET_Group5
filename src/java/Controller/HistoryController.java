@@ -7,8 +7,15 @@ package Controller;
 
 import Define.DateUitils;
 import Define.Define;
+import Entity.Account;
+import Entity.Customer;
+import Entity.History;
 import Entity.OrderDTO;
+import Entity.ProductInvoice;
+import Model.CustomerDAO;
 import Model.OrderDAO;
+import Model.ProductInvoiceDAO;
+import com.sun.org.apache.bcel.internal.generic.AALOAD;
 import java.io.IOException;
 import java.util.ArrayList;
 import javax.servlet.ServletException;
@@ -43,60 +50,68 @@ public class HistoryController extends HttpServlet {
         String toDate = null;
         String txtProductName = null;
         try {
-            String action = request.getParameter("btnAction");
+            Object a = session.getAttribute("account");
+            Account account = (Account) a;
+            if (a != null && account.getRole() == 3) {
+                CustomerDAO daocus = new CustomerDAO();
+                Customer cus = daocus.getCustomerbyid2(account.getUsername());
+                String action = request.getParameter("btnAction");
 
-            String user = (String) session.getAttribute("EMAIL");
-            fromDate = request.getParameter("txtFromDate");
-            toDate = request.getParameter("txtToDate");
-            txtProductName = new String(request.getParameter("txtProductName").getBytes("iso-8859-1"), "UTF-8").trim();;
+                String user = (String) session.getAttribute("EMAIL");
+                fromDate = request.getParameter("txtFromDate");
+                toDate = request.getParameter("txtToDate");
+                txtProductName = new String(request.getParameter("txtProductName").getBytes("iso-8859-1"), "UTF-8").trim();;
 
-            if (fromDate == null || fromDate.isEmpty()) {
-                fromDate = "";
-            }
-            if (toDate == null || toDate.isEmpty()) {
-                toDate = "";
-            }
-            if (txtProductName == null || txtProductName.isEmpty()) {
-                txtProductName = "";
-            }
-            DateUitils date = new DateUitils();
+                if (fromDate == null || fromDate.isEmpty()) {
+                    fromDate = "";
+                }
+                if (toDate == null || toDate.isEmpty()) {
+                    toDate = "";
+                }
+                if (txtProductName == null || txtProductName.isEmpty()) {
+                    txtProductName = "";
+                }
+                DateUitils date = new DateUitils();
 
-            OrderDAO bookingDAO = new OrderDAO();
+                OrderDAO bookingDAO = new OrderDAO();
+                ProductInvoiceDAO pdao = new ProductInvoiceDAO();
 //            check day not < 0
-            int dayDiffs = date.checkDay(fromDate, toDate);
-            // date && name == null
+                int dayDiffs = date.checkDay(fromDate, toDate);
+                // date && name == null
 
-            if ((fromDate.equals("") && toDate.equals("")) && txtProductName.equals("")) {
-                request.setAttribute("DATE_SMS", "Oops! Not found product history");
-                // date || name # null
-            } else if (((!fromDate.isEmpty() && !toDate.isEmpty())) || !txtProductName.isEmpty()) {
-                // name == null
-                if (txtProductName.equals("")|| !txtProductName.isEmpty()) {
-                    // date > 0
-                    if (dayDiffs >= 0) {
-                        ArrayList<OrderDTO> listOrder = new ArrayList<>();
-                        listOrder = bookingDAO.getOrderHistory(user, fromDate, toDate, txtProductName);
-                        request.setAttribute("LIST_ORDER", listOrder);
+                if ((fromDate.equals("") && toDate.equals("")) && txtProductName.equals("")) {
+                    request.setAttribute("DATE_SMS", "Oops! Not found product history");
+                    // date || name # null
+                } else if (((!fromDate.isEmpty() && !toDate.isEmpty())) || !txtProductName.isEmpty()) {
+                    // name == null
+                    if (txtProductName.equals("") || !txtProductName.isEmpty()) {
+                        // date > 0
+                        if (dayDiffs >= 0) {
+                            ArrayList<History> listOrder = new ArrayList<>();
+                            listOrder = pdao.getOrderHistory(cus.getCustomerID(), fromDate, toDate, txtProductName);
+                            request.setAttribute("LIST_ORDER", listOrder);
+                        } else {
+                            request.setAttribute("DATE_SMS", "You need change from date order bigger than to date order");
+                        }
+                        // name != null
                     } else {
-                        request.setAttribute("DATE_SMS", "You need change from date order bigger than to date order");
+                        ArrayList<History> listOrder = new ArrayList<>();
+                        listOrder = pdao.getOrderHistory(cus.getCustomerID(), fromDate, toDate, txtProductName);
+                        request.setAttribute("LIST_ORDER", listOrder);
                     }
-                    // name != null
-                } else {
-                    ArrayList<OrderDTO> listOrder = new ArrayList<>();
-                    listOrder = bookingDAO.getOrderHistory(user, fromDate, toDate, txtProductName);
+                    // date && name # null
+                } else if ((!fromDate.equals("") && !toDate.equals("")) && !txtProductName.equals("")) {
+                    ArrayList<History> listOrder = new ArrayList<>();
+                    listOrder = pdao.getOrderHistory(cus.getCustomerID(), fromDate, toDate, txtProductName);
                     request.setAttribute("LIST_ORDER", listOrder);
                 }
-                // date && name # null
-            } else if ((!fromDate.equals("") && !toDate.equals("")) && !txtProductName.equals("")) {
-                ArrayList<OrderDTO> listOrder = new ArrayList<>();
-                listOrder = bookingDAO.getOrderHistory(user, fromDate, toDate, txtProductName);
-                request.setAttribute("LIST_ORDER", listOrder);
-            }
 
-            request.setAttribute("txtFromDate", fromDate);
-            request.setAttribute("txtToDate", toDate);
-            request.setAttribute("searchedProductByName", txtProductName);
-//            }
+                request.setAttribute("txtFromDate", fromDate);
+                request.setAttribute("txtToDate", toDate);
+                request.setAttribute("searchedProductByName", txtProductName);
+            } else {
+                response.sendRedirect("login.jsp");
+            }
         } catch (Exception e) {
             log("Error At Order History Controller" + e.getLocalizedMessage());
             request.setAttribute("error", e.getLocalizedMessage());

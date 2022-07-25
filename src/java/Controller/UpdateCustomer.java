@@ -5,29 +5,22 @@
  */
 package Controller;
 
-import Define.Define;
-import Entity.Category;
-import Entity.CategoryDTO;
-import Entity.ProductDTO;
-import Model.ProductDAO;
-import Model.categoryDAO;
+import Entity.Customer;
+import Model.CustomerDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 /**
  *
- * @author duong
+ * @author SmileMint
  */
-@WebServlet(name = "CategoryController", urlPatterns = {"/CategoryController"})
-public class CategoryController extends HttpServlet {
+@WebServlet(name = "UpdateCustomer", urlPatterns = {"/UpdateCustomer"})
+public class UpdateCustomer extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -41,36 +34,12 @@ public class CategoryController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String url = Define.CATEGORY_PAGE;
-        Integer slCategory = null;
-        HttpSession session = request.getSession();
-        try {
-
-            String role = (String) session.getAttribute("ROLE");
-            //get all list product
-            ProductDAO productDAO = new ProductDAO();
-            ArrayList<ProductDTO> listProduct = 
-                    productDAO.getProductByParam(Define.IS_EMPTY_DEFAUL, Define.NUMBER_DEFAUL);
-            request.setAttribute("LIST_PRODUCT", listProduct);
-
-            //get all type category
-            categoryDAO categoryDAO = new categoryDAO();
-
-            slCategory = Integer.parseInt(request.getParameter("selectCategory"));
-
-            if (slCategory > 0 && slCategory != null) {
-                listProduct = productDAO.getProductByParam(Define.IS_EMPTY_DEFAUL, slCategory);
-                request.setAttribute("LIST_PRODUCT", listProduct);
-                session.setAttribute("searchedCategoryID", slCategory);
-            }
-                List<Category> listCategory = categoryDAO.getAllCategory();
-            request.setAttribute("LIST_CATEGORY", listCategory);
-
-        } catch (Exception e) {
-            log("Error At Category Controller " + e.getLocalizedMessage());
-//            request.setAttribute("ERROR_SMS", "Something is wrong here please back home page!!");
-        } finally {
-            request.getRequestDispatcher(url).forward(request, response);
+        try (PrintWriter out = response.getWriter()) {
+              String id = request.getParameter("sid");
+            CustomerDAO dao = new CustomerDAO();
+            Customer a = dao.getCustomerByID(id);
+            request.setAttribute("pr", a);
+            request.getRequestDispatcher("UpdateCustomer.jsp").forward(request, response);
         }
     }
 

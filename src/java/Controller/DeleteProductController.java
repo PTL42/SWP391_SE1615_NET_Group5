@@ -43,8 +43,12 @@ public class DeleteProductController extends HttpServlet {
             txtProductID = Integer.parseInt(request.getParameter("txtProductID"));
 
             ProductDAO productDAO = new ProductDAO();
-            boolean isSuccess = productDAO.deleteProduct(txtProductID);
-            if(isSuccess){
+            boolean isSuccess = productDAO.deleteProduct2(txtProductID);
+            if(productDAO.deletecheckdevi(txtProductID, "Shipped")){
+                isSuccess=false;
+            }
+            
+            if(isSuccess==true){
                 request.setAttribute("DELETE_PRODUCT", "Delete product successful");
             }else{
                 request.setAttribute("DELETE_PRODUCT", "Delete product failed");

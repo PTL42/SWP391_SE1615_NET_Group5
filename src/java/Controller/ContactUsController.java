@@ -42,10 +42,10 @@ public class ContactUsController extends HttpServlet {
                     if (submit == null) {
            request.getRequestDispatcher("ContactUs.jsp").forward(request, response);
                     }else{
-                        String name =request.getParameter("name");
-                        String email =request.getParameter("email");
-                        String phone =request.getParameter("phone");
-                        String mess =request.getParameter("mess");
+                        String name =request.getParameter("name").trim();
+                        String email =request.getParameter("email").trim();
+                        String phone =request.getParameter("phone").trim();
+                        String mess =request.getParameter("mess").trim();
                         ContactUs u=new ContactUs(name, email, phone, mess, 0);
                         int k=dao.insertContactUs(u);
                         if(k>0){

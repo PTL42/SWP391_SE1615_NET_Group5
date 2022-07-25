@@ -383,9 +383,7 @@
                                     <div class="row">
                                         <div class="col-6">
                                             <c:set var="context" value="${pageContext.request.contextPath}" />
-                                            <div class="form-group mt-3 img-thumbnail">
-                                                <img class="rounded mx-auto d-block" id="uploadPreview" src="${context}/${ORDER_DETAILS.productImage}" style="width: 75%; height: 50%" />
-                                            </div>
+
                                         </div>
                                         <div class="col-6">
                                             <div class="row">
@@ -395,7 +393,7 @@
                                                             <label>Full Name</label>
                                                         </div>
                                                         <div class="col-8">
-                                                            <label>${ORDER_DETAILS.fullName}</label>
+                                                            <label>${ORDER_DETAILS.name}</label>
                                                         </div>
                                                     </div>
                                                     <div class="row mt-1">
@@ -411,50 +409,11 @@
                                                             <label>Phone Number</label>
                                                         </div>
                                                         <div class="col-8">
-                                                            <label>${ORDER_DETAILS.phoneNumber}</label>
+                                                            <label>${ORDER_DETAILS.phone}</label>
                                                         </div>
                                                     </div>
-                                                    <div class="row mt-1">
-                                                        <div class="col-4">
-                                                            <label>Delivery</label>
-                                                        </div>
-                                                        <div class="col-8">
-                                                            <label>${ORDER_DETAILS.typeShipping}</label>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row mt-1">
-                                                        <div class="col-4">
-                                                            <label>Total</label>
-                                                        </div>
-                                                        <div class="col-8">
-                                                            <fmt:setLocale value = "vi_VN"/>
-                                                            <fmt:formatNumber value = "${ORDER_DETAILS.unitPrice}"/> VNĐ
-                                                        </div>
-                                                    </div>
-                                                    <div class="row mt-1">
-                                                        <div class="col-4">
-                                                            <label>Brand</label>
-                                                        </div>
-                                                        <div class="col-8">
-                                                            <label>${ORDER_DETAILS.typeCategory}</label>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row mt-1">
-                                                        <div class="col-4">
-                                                            <label>Order Date</label>
-                                                        </div>
-                                                        <div class="col-8">
-                                                            <label>${ORDER_DETAILS.orderDate}</label>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row mt-1">
-                                                        <div class="col-4">
-                                                            <label>Quantity</label>
-                                                        </div>
-                                                        <div class="col-8">
-                                                            <label>${ORDER_DETAILS.quantity}</label>
-                                                        </div>
-                                                    </div>
+
+
                                                 </div>
                                             </div>
                                         </div>

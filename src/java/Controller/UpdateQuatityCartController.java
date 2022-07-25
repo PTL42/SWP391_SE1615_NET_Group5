@@ -50,7 +50,7 @@ public class UpdateQuatityCartController extends HttpServlet {
                 }
                 if (cart.containsKey(pid)) {
                    
-//                    cart.get(pid).setQuantity(quantity);
+                    cart.get(pid).setQuantity(quantity);
                 }
                 if (cart.containsKey(pid)&&quantity==0) {
                    
@@ -61,7 +61,7 @@ public class UpdateQuatityCartController extends HttpServlet {
                  for (Map.Entry<Integer, Cart> entry : cart.entrySet()) {
                     Integer key = entry.getKey();
                     Cart carts = entry.getValue();
-//                    total+=carts.getQuantity()*carts.getProduct().getPrice();
+                    total+=carts.getQuantity()*carts.getProduct().getPrice();
                     
                 }
                 

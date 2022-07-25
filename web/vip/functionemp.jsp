@@ -29,8 +29,8 @@
                             <i class="icon-envelope menu-icon"></i> <span class="nav-text">Customer Manager </span>
                         </a>
                         <ul aria-expanded="false">
-                            <li><a href="HomeController">List Customer</a></li>
-                            <li><a href="HomeController">Add Customer</a></li>
+                            <li><a href="ListCustomer">List Customer</a></li>
+                            <li><a href="AddCustomer">Add Customer</a></li>
                          
                         </ul>
                     </li>

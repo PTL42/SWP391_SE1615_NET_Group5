@@ -5,12 +5,9 @@
  */
 package Controller;
 
-import Define.Define;
-import Entity.Category;
-import Entity.CategoryDTO;
-import Entity.ProductDTO;
-import Model.ProductDAO;
-import Model.categoryDAO;
+import Entity.Account;
+import Model.DeliveryaddressDAO;
+import Entity.Delivery;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -24,10 +21,10 @@ import javax.servlet.http.HttpSession;
 
 /**
  *
- * @author duong
+ * @author SmileMint
  */
-@WebServlet(name = "CategoryController", urlPatterns = {"/CategoryController"})
-public class CategoryController extends HttpServlet {
+@WebServlet(name = "ListDelivery", urlPatterns = {"/ListDelivery"})
+public class ListDelivery extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -41,36 +38,47 @@ public class CategoryController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String url = Define.CATEGORY_PAGE;
-        Integer slCategory = null;
-        HttpSession session = request.getSession();
-        try {
+        try (PrintWriter out = response.getWriter()) {
 
-            String role = (String) session.getAttribute("ROLE");
-            //get all list product
-            ProductDAO productDAO = new ProductDAO();
-            ArrayList<ProductDTO> listProduct = 
-                    productDAO.getProductByParam(Define.IS_EMPTY_DEFAUL, Define.NUMBER_DEFAUL);
-            request.setAttribute("LIST_PRODUCT", listProduct);
-
-            //get all type category
-            categoryDAO categoryDAO = new categoryDAO();
-
-            slCategory = Integer.parseInt(request.getParameter("selectCategory"));
-
-            if (slCategory > 0 && slCategory != null) {
-                listProduct = productDAO.getProductByParam(Define.IS_EMPTY_DEFAUL, slCategory);
-                request.setAttribute("LIST_PRODUCT", listProduct);
-                session.setAttribute("searchedCategoryID", slCategory);
+            HttpSession session = request.getSession();
+            Object a = session.getAttribute("account");
+            Account account = (Account) a;
+            if (a != null && account.getRole() == 1) {
+                DeliveryaddressDAO dao = new DeliveryaddressDAO();
+                List<Delivery> list = new ArrayList<>();
+                list = dao.getAllDelivery();
+                String oid = request.getParameter("oid");
+                String status = request.getParameter("stateid");
+                
+                int statusselect=0;
+                 if(status==null){
+                status="";
             }
-                List<Category> listCategory = categoryDAO.getAllCategory();
-            request.setAttribute("LIST_CATEGORY", listCategory);
+            if(status.equals("Shipped")){
+                statusselect=1;
+            }
+            if(status.equals("Delivered")){
 
-        } catch (Exception e) {
-            log("Error At Category Controller " + e.getLocalizedMessage());
-//            request.setAttribute("ERROR_SMS", "Something is wrong here please back home page!!");
-        } finally {
-            request.getRequestDispatcher(url).forward(request, response);
+            }
+            
+                if (oid != null) {
+                    int id = Integer.parseInt(oid);
+
+                    int k = dao.updateDeliverystates(status, id);
+                    list = dao.getAllDelivery();
+                    request.setAttribute("ha", k);
+
+                    request.setAttribute("mess", "Update successful for SHIPPING CODE with ID:" + id);
+                    request.setAttribute("List", list);
+
+                    request.getRequestDispatcher("ListDelivery.jsp").forward(request, response);
+                }
+                request.setAttribute("List", list);
+                 request.setAttribute("statusselect", statusselect);
+                request.getRequestDispatcher("ListDelivery.jsp").forward(request, response);
+            }else{
+              response.sendRedirect("login.jsp");
+            }
         }
     }
 

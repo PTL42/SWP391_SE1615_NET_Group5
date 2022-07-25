@@ -7,9 +7,11 @@ package Controller;
 
 import Define.Define;
 import Entity.CategoryDTO;
+import Entity.Delivery;
 import Entity.OrderDetailsDTO;
 import Entity.ProductDTO;
 import Entity.SizeDTO;
+import Model.DeliveryaddressDAO;
 import Model.OrderDetailsDAO;
 import Model.ProductDAO;
 import Model.categoryDAO;
@@ -47,12 +49,15 @@ public class DisplayHistoryDetailsController extends HttpServlet {
             txtOrderDetailsId = Integer.parseInt(request.getParameter("txtOrderDetailsID"));
             
             OrderDetailsDAO productDAO = new OrderDetailsDAO();
-            OrderDetailsDTO orderDetailsId = productDAO.getOrderDetailsByID(txtOrderDetailsId);
+            
+            DeliveryaddressDAO daodeli=new DeliveryaddressDAO();
+//            OrderDetailsDTO orderDetailsId = productDAO.getOrderDetailsByID(txtOrderDetailsId);
+            Delivery orderDetailsId=daodeli.getDeliverybyinvoiceId(txtOrderDetailsId);
             request.setAttribute("ORDER_DETAILS", orderDetailsId);
             
             categoryDAO categoryDAO = new categoryDAO();
-            ArrayList<CategoryDTO> listCategory = categoryDAO.getAllCategorys();
-            request.setAttribute("LIST_CATEGORY", listCategory);
+//            ArrayList<CategoryDTO> listCategory = categoryDAO.getAllCategorys();
+//            request.setAttribute("LIST_CATEGORY", listCategory);
         } catch (Exception e) {
             log("Error At Display History Details Controller " + e.getLocalizedMessage());
         } finally {

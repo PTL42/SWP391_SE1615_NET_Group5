@@ -51,7 +51,7 @@
 
             <div class="container-fluid mt-3">
                 <div class="row">
-                    <div class="col-lg-3 col-sm-6">
+                    <div class="col-lg-4 col-sm-6">
                         <div class="card gradient-1">
                             <div class="card-body">
                                 <h3 class="card-title text-white">Products Sold</h3>
@@ -63,7 +63,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-3 col-sm-6">
+<!--                    <div class="col-lg-3 col-sm-6">
                         <div class="card gradient-2">
                             <div class="card-body">
                                 <h3 class="card-title text-white">Net Profit</h3>
@@ -74,26 +74,26 @@
                                 <span class="float-right display-5 opacity-5"><i class="fa fa-money"></i></span>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-lg-3 col-sm-6">
+                    </div>-->
+                    <div class="col-lg-4 col-sm-6">
                         <div class="card gradient-3">
                             <div class="card-body">
-                                <h3 class="card-title text-white">Total Employee</h3>
+                                <h3 class="card-title text-white"> Employee Total</h3>
                                 <div class="d-inline-block">
                                     <h2 class="text-white">${countem}</h2>
-                                    <p class="text-white mb-0">Jan - March 2019</p>
+                                    <!--<p class="text-white mb-0">Jan - March 2019</p>-->
                                 </div>
                                 <span class="float-right display-5 opacity-5"><i class="fa fa-users"></i></span>
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-3 col-sm-6">
+                    <div class="col-lg-4 col-sm-6">
                         <div class="card gradient-4">
                             <div class="card-body">
                                 <h3 class="card-title text-white">Customer Total</h3>
                                 <div class="d-inline-block">
-                                    <h2 class="text-white">99%</h2>
-                                    <p class="text-white mb-0">Jan - March 2019</p>
+                                    <h2 class="text-white">${countcus}</h2>
+                                    <!--<p class="text-white mb-0">Jan - March 2019</p>-->
                                 </div>
                                 <span class="float-right display-5 opacity-5"><i class="fa fa-heart"></i></span>
                             </div>
@@ -111,17 +111,17 @@
                                             <div class="row">
                                             <h4 class="mb-1">Product Sales</h4>
                                             <a  href="searchprofit">
-                                     <span style=" border-radius: 50%;height: 50px;width: 100px;font-size: 20px;margin-left: 1294px;" class="badge-primary px-4">Search</span>
+                                     <span style=" border-radius: 50%;height: 50px;width: 100px;font-size: 20px;margin-left: 10px;" class="badge-primary px-4">Search</span>
                                         </a>
                                             </div>
                                             <p>Total Earnings of the Week</p>
-                                            <h3 class="m-0">$${totalweek}</h3>
+                                            <h3 class="m-0">${totalweek}VND</h3>
                                             
                                         </div>
                                         <div style="display: none;" id="totalmoth">
                                             <h4 class="mb-1">Product Sales</h4>
                                             <p>Total Earnings of the Moth</p>
-                                            <h3 class="m-0">$${totalmoth}</h3>
+                                            <h3 class="m-0">${totalmoth}VND</h3>
                                            <a href="#">
                                      <span class="badge badge-primary px-2">Search</span>
                                         </a>
@@ -279,21 +279,22 @@
                             <div class="card card-widget">
                                 <div class="card-body">
                                     <h5 class="text-muted">Order Overview </h5>
-                                    <h2 class="mt-4">5680</h2>
+                                    <h2 class="mt-4">${coutoffonl}</h2>
                                     <span>Total Revenue</span>
                                     <div class="mt-4">
-                                        <h4>30</h4>
-                                        <h6>Online Order <span class="pull-right">30%</span></h6>
+                                        <h4>${coutoffonl-countoff}</h4>
+                                        <h6>
+                                            Offline Order<span class="pull-right"> ${((coutoffonl-countoff)/coutoffonl)*100}%</span></h6>
                                         <div class="progress mb-3" style="height: 7px">
-                                            <div class="progress-bar bg-primary" style="width: 30%;" role="progressbar"><span class="sr-only">30% Order</span>
+                                            <div class="progress-bar bg-primary" style="width: ${((coutoffonl-countoff)/coutoffonl)*100}%;" role="progressbar"><span class="sr-only"> ${((coutoffonl-countoff)/coutoffonl)*100}% Order</span>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="mt-4">
-                                        <h4>50</h4>
-                                        <h6 class="m-t-10 text-muted">Offline Order <span class="pull-right">50%</span></h6>
+                                        <h4>${countoff}</h4>
+                                        <h6 class="m-t-10 text-muted">Online Order<span class="pull-right">${(countoff/coutoffonl)*100}%</span></h6>
                                         <div class="progress mb-3" style="height: 7px">
-                                            <div class="progress-bar bg-success" style="width: 50%;" role="progressbar"><span class="sr-only">50% Order</span>
+                                            <div class="progress-bar bg-success" style="width: ${(countoff/coutoffonl)*100}%;" role="progressbar"><span class="sr-only"> ${(countoff/coutoffonl)*100}% Order</span>
                                             </div>
                                         </div>
                                     </div>
@@ -327,7 +328,7 @@
                     </div>-->
             </div>
                 
-                <div class="container-fluid">
+<!--                <div class="container-fluid">
                 <div class="row">
                     <div class="col-lg-6">
                         <div class="card">
@@ -343,7 +344,7 @@
                                     <table class="table">
                                         <thead>
                                             <tr>
-                                                <!--<th>#</th>-->
+                                                <th>#</th>
                                                 <th>InvoiceID</th>
                                                 <th>CreatedDate</th>
                                                 <th>EmployeeID</th>
@@ -370,9 +371,9 @@
                             </div>
                         </div>
                     </div>
-                    <!-- /# column -->
+                     /# column 
                  
-                    <!-- /# column -->
+                     /# column 
                     <div class="col-lg-6">
                         <div class="card">
                             <div class="card-body">
@@ -425,7 +426,7 @@
                             </div>
                         </div>
                     </div>
-                    <!-- /# column -->
+                     /# column 
                     <div class="col-lg-6">
                         <div class="card">
                             <div class="card-body">
@@ -477,7 +478,7 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- /# card -->
+                         /# card 
                     </div>
                     <div class="col-lg-6">
                         <div class="card">
@@ -536,7 +537,7 @@
                         </div>
                     </div>
                 </div>
-                </div>
+                </div>-->
 
 
                 

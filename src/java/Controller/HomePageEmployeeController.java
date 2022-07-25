@@ -148,13 +148,13 @@ public class HomePageEmployeeController extends HttpServlet {
                     session.setAttribute("idinvoicenew", idinvoicenew + 1);
 request.getRequestDispatcher("addinvoice.jsp").forward(request, response);
                     }
-                    if (searchname.equals("") != true && cate.equals("all") == false) {
+                    if (searchname.equals("") != true && cate.equals("all")!= false) {
                         list = dao3.getAllProductbycateidandname(searchname);
                         
                         request.setAttribute("searchname", searchname);
                         request.setAttribute("cate", cate);
 
-                        session.setAttribute("url", "HomePageEmployeeController?do=ListSearchProduct&searchname=" + searchname);
+                        session.setAttribute("url", "HomePageEmployeeController?do=ListSearchProduct&searchname=" + searchname+"&cate=" + "all");
                     } 
                     if (searchname.equals("") == true && cate.equals("all") != false) {
                          int catecon = Integer.parseInt(cate);
@@ -164,7 +164,7 @@ request.getRequestDispatcher("addinvoice.jsp").forward(request, response);
                         request.setAttribute("cate", cate);
 
                         session.setAttribute("url", "HomePageEmployeeController?do=ListSearchProduct&cate=" + cate);
-                    } else {
+                    }if (searchname.equals("") != true && cate.equals("all") != true) {
                         int catecon = Integer.parseInt(cate);
                         list = dao3.getAllProductbycateidandname(catecon, searchname);
                         request.setAttribute("searchname", searchname);

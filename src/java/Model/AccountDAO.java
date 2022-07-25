@@ -147,6 +147,68 @@ public class AccountDAO extends ConnectDB {
         }
         return n;
     }
+     public int insertacc(String usename, String pass) {
+        String sql = "insert into Account\n"
+                + "values(?,?,?)";
+        int n = 0;
+
+        try {
+          conn = getConnection();
+            state = conn.prepareStatement(sql);
+            state.setString(1, usename);
+            state.setString(2, pass);
+            state.setInt(3, 3);
+            n = state.executeUpdate();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            closePrepareStatement(state);
+            closeConnection(conn);
+        }
+        return n;
+    }
+     
+     public int insertaccemp(String usename, String pass) {
+        String sql = "insert into Account\n"
+                + "values(?,?,?)";
+        int n = 0;
+
+        try {
+          conn = getConnection();
+            state = conn.prepareStatement(sql);
+            state.setString(1, usename);
+            state.setString(2, pass);
+            state.setInt(3, 0);
+            n = state.executeUpdate();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            closePrepareStatement(state);
+            closeConnection(conn);
+        }
+        return n;
+    }
+         
+     public int deleteacc(String usename) {
+        String sql = "DELETE FROM [dbo].[Account]\n" +
+"      WHERE username=? ";
+        int n = 0;
+
+        try {
+          conn = getConnection();
+            state = conn.prepareStatement(sql);
+            state.setString(1, usename);
+       
+           
+            n = state.executeUpdate();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            closePrepareStatement(state);
+            closeConnection(conn);
+        }
+        return n;
+    }
 //      public static void checktime(String r,String e) {
 //     Date date=new Date();
 //     
@@ -195,9 +257,9 @@ public class AccountDAO extends ConnectDB {
 //        for (All all : a) {
 //            System.out.println(all);
 //        }
-        Account a = dao.getAccount("lunguyen", "12345Asa");
-        System.out.println(a);
-        int n=dao.ChangePassword("lunguyen", "123456As");
+//        Account a = dao.getAccount("lunguyen", "12345Asa");
+//        System.out.println(a);
+        int n=dao.insertacc("lunguyen22", "123456As");
         System.out.println(n);
 //        String dob = "2022/2/2";
 //        try {

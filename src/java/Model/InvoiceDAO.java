@@ -45,6 +45,24 @@ public class InvoiceDAO  extends ConnectDB{
         }
         return null;
     }
+  public int countinvoice() {
+      int n=0;
+        try {
+            String query = "select COUNT(*)  from Invoice";
+            conn = getConnection();
+            state = conn.prepareStatement(query);
+          
+            rs = state.executeQuery();
+            List<Invoice> list = new ArrayList<>();
+            while (rs.next()) {
+             n=  rs.getInt(1);
+
+            }
+            return n;
+        } catch (Exception e) {
+        }
+        return n;
+    }
     public List<Invoice> getAllInvoicetop3() {
         try {
             String query = "select top(3) * from Invoice order by invoiceID desc";

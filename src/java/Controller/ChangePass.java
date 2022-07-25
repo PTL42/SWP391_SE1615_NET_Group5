@@ -43,8 +43,8 @@ public class ChangePass extends HttpServlet {
             Object a = session.getAttribute("account");
             if (a != null) {
                 Account account = (Account) a;
-                String pass = request.getParameter("confirm");
-                String passo = request.getParameter("passwordoder");
+                String pass = request.getParameter("confirm").trim();
+                String passo = request.getParameter("passwordoder").trim();
                 
                 AccountDAO dao = new AccountDAO();
                 if (passo != null) {

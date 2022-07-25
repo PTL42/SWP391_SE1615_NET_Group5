@@ -72,9 +72,12 @@
                                         <div class="example">
                                             <h5 class="box-title m-t-30">Date Range picker</h5>
                                          
-                                            <div class="input-daterange input-group" id="date-range">
-                                                <input min="<%= LocalDate.now()%>" type="text" class="form-control min-date" name="start" value="${start}"> <span class="input-group-addon bg-info b-0 text-white">to</span>
-                                                <input type="text" class="form-control" name="end" value="${end}"  min="<%= LocalDate.now()%>">
+                                            <div class="input-daterange input-group" id="">
+                                             <input class="form-control" type="date" value="${start}" name="start"
+                                                                       min="<%= LocalDate.now().minusYears(2)%>" max="<%= LocalDate.now()%>"><span class="input-group-addon bg-info b-0 text-white">to</span>
+            
+                                                 <input class="form-control" type="date" value="${end}" name="end"
+                                                                       min="<%= LocalDate.now().minusYears(2)%> " max="<%= LocalDate.now()%>">
                                               
                                             </div>
                                            
@@ -107,7 +110,7 @@
                                         <div style="display: none;" id="totalmoth">
                                             <h4 class="mb-1">Product Sales</h4>
                                             <p>Total Earnings of the Moth</p>
-                                            <h3 class="m-0">$${totalmoth}</h3>
+                                            <h3 class="m-0">${totalmoth}</h3>
                                         </div>
                                         <div>
                                             
@@ -315,7 +318,7 @@
                   productquantitytoday[0] = productquantitytoday[0].substring(1, productquantitytoday[0].length);
                 for (var i = 0, max = productnametoday.length; i < max; i++) {
                             if(productnametoday[i].length>9){
-                                productnametoday[i] = productnametoday[i].substring(0, productnametoday[0].length-5)+"...";
+                                productnametoday[i] = productnametoday[i].substring(0, productnametoday[0].length-10)+"...";
 }
                      
 }

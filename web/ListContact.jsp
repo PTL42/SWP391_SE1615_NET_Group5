@@ -100,7 +100,7 @@
                                                            Not answered
                                                     </c:if>
                                                     </td>
-                                                        <td class="color-primary"><a href="ReadMess?id=${o.id}">Rep</td>
+                                                        <td class="color-primary"><a href="ReadMess?id=${o.id}">Answer</td>
 
                                                     </tr>
                                                 </c:forEach>  

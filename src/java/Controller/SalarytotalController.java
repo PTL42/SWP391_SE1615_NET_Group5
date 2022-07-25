@@ -47,9 +47,9 @@ public class SalarytotalController extends HttpServlet {
             /* TODO output your page here. You may use following sample code. */
      HttpSession session = request.getSession();
             Object a = session.getAttribute("account");
-        
-            if (a != null) {
-                Account account = (Account) a;
+          Account account = (Account) a;
+            if (a != null &&account.getRole()==1) {
+              
 
   
                 SimpleDateFormat dt3 = new SimpleDateFormat("dd-MM-yyyy");

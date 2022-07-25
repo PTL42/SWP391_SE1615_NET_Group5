@@ -78,7 +78,7 @@
                 <c:if test="${sessionScope.n==5}">    <%@include file="vip/updateshippers.jsp"%></c:if>
                 <c:if test="${sessionScope.n==6}">    <%@include file="vip/addshippers_1.jsp"%></c:if>
                 <c:if test="${sessionScope.n==4}"> 
-                    <td><a href="shippers?do=AddShippers"><span style="/* float: left; */height: 50px;width: 100px;font-size: 20px;margin-left: 1294px;" class="badge badge-primary px-2">Add Shippers</span></a>
+                    <td><a href="shippers?do=AddShippers"><span style="/* float: left; */height: 50px;width: 150px;font-size: 20px;" class="badge badge-primary px-2">Add Shippers</span></a>
                         <div class="container-fluid">
 
                             <div class="row">

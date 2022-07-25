@@ -8,6 +8,8 @@ package Controller;
 import Entity.Account;
 import Entity.Invoice;
 import Entity.ProductSaleToday;
+import Model.CustomerDAO;
+import Model.DeliveryaddressDAO;
 import Model.EmployeeDAO;
 import Model.InvoiceDAO;
 import Model.ProductDAO;
@@ -57,8 +59,9 @@ public class dashboardController extends HttpServlet {
             ProductDAO dao = new ProductDAO();
                 EmployeeDAO daoEM = new EmployeeDAO();
             InvoiceDAO dao2 = new InvoiceDAO();
+            DeliveryaddressDAO daode=new DeliveryaddressDAO();
             ProductInvoice2DAO dao3= new ProductInvoice2DAO();
-            
+            CustomerDAO daocus=new CustomerDAO();
             List<Invoice> listi=dao2.getAllInvoicetop3();
             LocalDate date = java.time.LocalDate.now();
             String date1 = date.toString();
@@ -190,6 +193,9 @@ public class dashboardController extends HttpServlet {
             request.setAttribute("thang12", productsaleTHANG12);
             request.setAttribute("listI",listi);
             request.setAttribute("countem",daoEM.countemployees());
+            request.setAttribute("countcus",daocus.countCustomer());
+            request.setAttribute("coutoffonl",dao2.countinvoice());
+            request.setAttribute("countoff",daode.countDelivery());
             request.setAttribute("listtoday", productsaletoday);
             request.setAttribute("productsold", ProductSold);
             request.setAttribute("date", dt3.format(date2));

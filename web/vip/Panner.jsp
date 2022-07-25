@@ -201,6 +201,9 @@
                             <div class="drop-down dropdown-profile animated fadeIn dropdown-menu">
                                 <div class="dropdown-content-body">
                                     <ul>
+                                        <c:if test="${not empty ROLE}">
+                                            
+                                        
                                         <li>
                                             <a href="EditProfile"><i class="icon-user"></i> <span>Profile</span></a>
                                         </li>
@@ -215,6 +218,10 @@
                                             <a href="ChangePass"><i class="icon-lock"></i> <span>Change Password</span></a>
                                         </li>
                                         <li><a href="LogoutController"><i class="icon-key"></i> <span>Logout</span></a></li>
+                                        </c:if>
+                                        <c:if test="${empty ROLE}">
+                                        <li><a href="LogoutController"><i class="icon-key"></i> <span>Login</span></a></li>
+                                        </c:if>
                                     </ul>
                                 </div>
                             </div>

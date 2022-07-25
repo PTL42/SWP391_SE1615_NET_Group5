@@ -9,22 +9,34 @@ public class Customer {
     private String phone;
     private String img;
     private String username;
-    private String password;
+    
+
     private String email;
 
     public Customer() {
     }
 
-    public Customer(int customerID, String customerName, String adress, String phone, String img, String username, String password, String email) {
+    public Customer(int customerID, String customerName, String adress, String phone, String img, String username, String email) {
         this.customerID = customerID;
         this.customerName = customerName;
         this.adress = adress;
         this.phone = phone;
         this.img = img;
         this.username = username;
-        this.password = password;
+
         this.email = email;
     }
+
+    public Customer(String customerName, String adress, String phone, String username, String email) {
+        this.customerName = customerName;
+        this.adress = adress;
+        this.phone = phone;
+        this.username = username;
+
+        this.email = email;
+    }
+
+   
 
     public int getCustomerID() {
         return customerID;
@@ -74,13 +86,7 @@ public class Customer {
         this.username = username;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
+   
 
     public String getEmail() {
         return email;
@@ -92,7 +98,7 @@ public class Customer {
 
     @Override
     public String toString() {
-        return "Customer{" + "customerID=" + customerID + ", customerName=" + customerName + ", adress=" + adress + ", phone=" + phone + ", img=" + img + ", username=" + username + ", password=" + password + ", email=" + email + '}';
+        return "Customer{" + "customerID=" + customerID + ", customerName=" + customerName + ", adress=" + adress + ", phone=" + phone + ", img=" + img + ", username=" + username  + ", email=" + email + '}';
     }
 
    

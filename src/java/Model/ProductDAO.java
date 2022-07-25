@@ -514,7 +514,50 @@ private void closeConnection() throws Exception {
         }
         return isSuccess;
     }
+    public Boolean deleteProduct2(int productId) {
+        Boolean isSuccess = false;
+        String sql = "DELETE FROM [dbo].[Product]\n" +
+"      WHERE productID = ?";
+        try {
+            conn = getConnection();
+            state = conn.prepareStatement(sql);
+//            state.setBoolean(1, Boolean.FALSE);
+            state.setInt(1, productId);
+
+            if (state.executeUpdate() > 0) {
+                isSuccess = true;
+            }
+        } catch (Exception e) {
+        } finally {
+          closePrepareStatement(state);
+            closeConnection(conn);
+        }
+        return isSuccess;
+    }
     
+      public Boolean deletecheckdevi(int productId,String a) {
+        Boolean isSuccess = false;
+        String sql = " select p.productID from [Delivery] d\n" +
+"  inner join Invoice i on d.invoiceId=i.invoiceID\n" +
+"  inner join Product_Invoice pin on d.invoiceId=pin.invoiceID\n" +
+"    inner join Product p on p.productID=pin.productID\n" +
+"  where p.productID="+productId+" and d.[status]='"+a+"'";
+        try {
+            conn = getConnection();
+            state = conn.prepareStatement(sql);
+//            state.setBoolean(1, Boolean.FALSE);
+            state.setInt(1, productId);
+
+            if (state.executeUpdate() > 0) {
+                isSuccess = true;
+            }
+        } catch (Exception e) {
+        } finally {
+          closePrepareStatement(state);
+            closeConnection(conn);
+        }
+        return isSuccess;
+    }
     public int getQuantity(int productID) throws Exception {
         int quantity = 0;
         String sql = "SELECT productQuantity FROM Product WHERE productID = ?";
@@ -552,11 +595,12 @@ private void closeConnection() throws Exception {
     
     public static void main(String[] args) {
         ProductDAO dao = new ProductDAO();
-        List<ProductSaleToday> list = dao.getAllProductSaleSearchall();
-        for (ProductSaleToday customer : list) {
-            System.out.println(customer);
-
-        }
+        System.out.println(dao.deletecheckdevi(2, "Shipped"));
+//        List<ProductSaleToday> list = dao.getAllProductSaleSearchall();
+//        for (ProductSaleToday customer : list) {
+//            System.out.println(customer);
+//
+//        }
 //           ProductDTO p=dao.getProductByID(13);
 //           System.out.println(p);
 

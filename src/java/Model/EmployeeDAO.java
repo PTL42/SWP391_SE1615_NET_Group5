@@ -297,7 +297,8 @@ public class EmployeeDAO extends ConnectDB {
 //        EmployeeDAO dao=new EmployeeDAO();
 //        dao.UpdateEmployee("1", "Dao thanh long", "1", "091231823", "2000-03-22", "https://img5.thuthuatphanmem.vn/uploads/2021/07/16/hinh-anh-trai-dep-viet-nam-cool-ngau_085758224.jpg");
 //    }
-    public void insertEmployee(String name, String gender, String phone, String dob, String img, String username, String email) {
+    public int  insertEmployee(String name, String gender, String phone, Date dob, String img, String username, String email) {
+        int n=0;
         String query = "insert into Employees values(?,?,?,?,?,?,?)";
         try {
               conn = getConnection();
@@ -306,13 +307,14 @@ public class EmployeeDAO extends ConnectDB {
             state.setString(1, name);
             state.setString(2, gender);
             state.setString(3, phone);
-            state.setString(4, dob);
+            state.setDate(4, dob);
             state.setString(5, img);
             state.setString(6, username);
             state.setString(7, email);
-            state.executeUpdate();
+            n=state.executeUpdate();
         } catch (Exception e) {
         }
+        return n;
     }
     public int countemployees() {
             int n=0;
@@ -342,7 +344,8 @@ public class EmployeeDAO extends ConnectDB {
 //        Employees a=dao.getEmpployeesbyUsername("lunguyen");
 //        int n=dao.UpdateEmployees(a);
 //        System.out.println(a);
-        String n = dao.getEmail("lunguyen2k18@gmail.com");
-        System.out.println(n);
+//        String n = dao.getEmail("lunguyen2k18@gmail.com");
+//        System.out.println(n);
+//System.out.println(dao.insertEmployee("ok", "1", "2", "27/2", img, username, email));
     }
 }

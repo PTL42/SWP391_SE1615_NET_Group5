@@ -17,18 +17,13 @@
 
     <body>
 
-         
+        
         <%@include file="vip/Panner.jsp" %>
-
-       
-
-        <div ${ROLE == 'ADMIN' ? '':'style="display: none"'}>
-            <%@include file="vip/function.jsp" %>
-        </div>
-        <div ${ROLE == 'EMPLOYEES' ? '':'style="display: none"'}>
-            <%@include file="vip/functionemp.jsp" %>
-        </div>
+            
+        
+        
           
+                    <%@include file="vip/function.jsp" %>
 
         <!--**********************************
             Header end ti-comment-alt
@@ -58,20 +53,22 @@
             <!-- row -->
 
            <div class="container-fluid">
-                <c:if test="${not empty add}">
-                        <div class="alert alert-primary alert-dismissible fade show" role="alert">
-                            <strong>Note:</strong> <span font-weight-semi-bold text-capitalize style="color: black">DELETE SUCCESS</span>
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                        </div>
-                    </c:if>
+                  <div style="padding: 0 20%; margin-top: 10px ">
+                <c:if test="${ha==1}">
+                    <div class="alert alert-primary alert-dismissible fade show" role="alert">
+                        <strong>Note:</strong> <span font-weight-semi-bold text-capitalize style="color: black">${mess}</span>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                </c:if>
+            </div>
                     <div class="row justify-content-center">
                         <div class="col-lg-12">
                             <div class="card">
                                 <div class="card-body">
                                     <div class="form-validation">
-                                    <h4>List Customer</h4>
+                                    <h4>List Delivery</h4>
                                 </div>
-                                    <form class="form-valide" action="SearchCustomer" method="post">
+                                    <form class="form-valide" action="SearchDelivery" method="post">
                                 <div class="form-group row">
                                     <div class="align-center col-lg-6">
                                         <input type="text" maxlength="99" class="form-control" id="val-website" name="search" value="${search}" >
@@ -79,20 +76,17 @@
                                     <button type="summit" class="btn btn-primary" >Search</button>
                                 </div>
                                 </form>
-                                      <form class="form-valide" action="ListCustomer" method="post">
-                                        <input type="hidden" name="do" value="ListAll">
                                 <div class="table-responsive">
                                     <table class="table">
                                         <thead>
                                             <tr>
-                                                <th>Image</th>
-                                                <th>Email</th>
+                                                 <th>Code</th>
                                                 <th>Name</th>
-                                              
-                                                <th>Phone</th>
-                                                <!--<th>Details</th>-->
-                                                <th>Actions</th>
-                                                <th>Actions</th>
+                                               <th>Phone</th>
+                                               <th>Address</th>                                                                                                                                       
+                                                <th>Status</th>
+                                        
+                                             
                                                     
                                             </tr>
                                         </thead>
@@ -101,28 +95,35 @@
                                                 <tr>
                                                   
                                                     
-                                                    <td><img height="70px" width="70px" src="${o.img}"></td>
-                                                    <td>${o.email}</td>
-                                                    <td>${o.customerName}</td>
+                                                    <td>${o.id}</td>
+                                                    <td>${o.name}</td>
                                                     <td>${o.phone}</td>
+                                                    <td>${o.address}</td>
+                                                    <td>  <form action="ListDelivery" method="post"> 
+                                                       
+                                                          <input type="hidden" name="oid" value="${o.id}"  > 
+                                                          
+                                                      <select   name="stateid"  class="form-control input-rounded" class="form-control form-control-lg"  onchange="this.form.submit()">
+                                                
+                                                        <option class="fa fa-circle-o text-warning  mr-2" value="Not Shipped" ${o.status=='Not Shipped' ? 'selected="selected"' : ''}>Not Shipped</option>
+                                                        <option class="fa fa-circle-o text-warning  mr-2" value="Shipped" ${o.status == 'Shipped' ? 'selected="selected"' : ''}>Shipped</option>
+                                                        <option class="fa fa-circle-o text-success  mr-2" value="Delivered" ${o.status== 'Delivered' ? 'selected="selected"' : ''}>Delivered</option>
+
                                                    
-                                                    <td><a href="UpdateCustomer?sid=${o.customerID}">Update</a>    </td>
-                                                    <td><a href="#" onclick="Myfuntion(${o.customerID})">Delete</a></td>
+
+                                                </select>
+                                                    
+                                                        </form> 
+                                                    </td>                                                 
+                                                                                                      
                                                 </tr>
 
                                             </tbody>
                                         </c:forEach> 
                                     </table>
-                                    <script>
-                                        function Myfuntion(id){
-                                            var op = confirm('Are you sure to delete');
-                                            if(op=== true){
-                                                window.location.href = 'ListCustomer?do=Deletecus&sid='+id;
-                                            }
-                                        }
-                                    </script>
+                                   
                                 </div>
-                                      </form>
+
                             </div>
                         </div>
                     </div>              

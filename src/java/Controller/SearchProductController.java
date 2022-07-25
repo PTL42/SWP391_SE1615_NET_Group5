@@ -7,12 +7,10 @@ package Controller;
 
 import Define.Define;
 import Entity.Category;
-import Entity.CategoryDTO;
 import Entity.ProductDTO;
 import Model.ProductDAO;
 import Model.categoryDAO;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.ServletException;
@@ -51,7 +49,10 @@ public class SearchProductController extends HttpServlet {
             ArrayList<ProductDTO> listProduct = new ArrayList<>();
             ProductDAO productDAO = new ProductDAO();
 
-            if (action != null && !action.equals("")) {
+            if(action.equals("Login First")){
+                 request.setAttribute("SMS_LOGIN", "Please login first after add product to card! Thank you use service");
+            }
+            else if (action != null && !action.equals("")) {
                 if (action.equals("Category")) {
                     int categoryId = Integer.parseInt(request.getParameter("selectCategory"));
                     listProduct = productDAO.getProductByParam("", categoryId);

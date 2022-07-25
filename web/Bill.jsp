@@ -28,7 +28,13 @@
         <!--**********************************
             Sidebar start
         ***********************************-->
-        <%@include file="vip/functionemp.jsp" %>
+       <div ${ROLE == 'ADMIN' ? '':'style="display: none"'}>
+            <%@include file="vip/function.jsp" %>
+        </div>
+        <div ${ROLE == 'EMPLOYEES' ? '':'style="display: none"'}>
+            <%@include file="vip/functionemp.jsp" %>
+        </div>
+          
             <!--**********************************
                 Sidebar end
             ***********************************-->

@@ -5,8 +5,12 @@
  */
 package Controller;
 
+import Entity.Account;
 import Entity.Customer;
+import Entity.Employees;
+import Model.AccountDAO;
 import Model.CustomerDAO;
+import Model.EmployeeDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
@@ -15,6 +19,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -37,12 +42,50 @@ public class ListCustomer extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
 
         try {
-            CustomerDAO dao = new CustomerDAO();
+          
+            
+            
+            
+            
+                  HttpSession session = request.getSession();
 
-            List<Customer> list = dao.getAllCustomer();
+            String service = request.getParameter("do");
+
+            Object a = session.getAttribute("account");
+            Account account = (Account) a;
+            if (a != null &&(account.getRole() == 1 || account.getRole()==0)) {
+//                Account account = (Account) a;
+                EmployeeDAO dao = new EmployeeDAO();
+                int n = 0;
+                            CustomerDAO daocus = new CustomerDAO();
+                Employees e = dao.getEmpployeesbyUsername(account.getUsername());
+             if (service == null) {
+                    service = "ListAll";
+                    n=1;
+                }
+             if(service.equals("ListAll")){
+       
+            List<Customer> list = daocus.getAllCustomer();
             
             request.setAttribute("List", list);
             request.getRequestDispatcher("ListCustomer.jsp").forward(request, response);
+             }
+             if(service.equals("Deletecus")){
+                  AccountDAO daoacc =new AccountDAO();
+                 String id=request.getParameter("sid");
+                 int id2=Integer.parseInt(id);
+                    daocus.DeleteCustomer(id2);
+                    Customer CUS=daocus.getCustomerByID(id);
+                    daoacc.deleteacc(CUS.getUsername());
+                   request.setAttribute("add", 1);
+                      List<Customer> list = daocus.getAllCustomer();
+          request.setAttribute("List", list);
+           request.getRequestDispatcher("ListCustomer.jsp").forward(request, response);
+             }
+       
+        }else{
+                response.sendRedirect("login.jsp");
+            }
         } catch (Exception e) {
             request.getRequestDispatcher("/page-error-500.html").forward(request, response);
         }

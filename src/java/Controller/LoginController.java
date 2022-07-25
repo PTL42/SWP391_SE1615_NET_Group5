@@ -9,12 +9,16 @@ import Define.Define;
 import Entity.Account;
 import Entity.Category;
 import Entity.CategoryDTO;
+import Entity.Customer;
 import Entity.Employees;
 import Entity.ProductDTO;
+import Entity.Shippers;
 import Entity.UserDTO;
 import Model.AccountDAO;
+import Model.CustomerDAO;
 import Model.EmployeeDAO;
 import Model.ProductDAO;
+import Model.ShippersDAO;
 import Model.UserDAO;
 import Model.categoryDAO;
 import java.io.IOException;
@@ -59,7 +63,7 @@ public class LoginController extends HttpServlet {
             boolean remember = request.getParameter("remember") != null;
             AccountDAO dao = new AccountDAO();
             Account a = dao.getAccount(u, p);
-          
+
 //            out.println(cus);
             String service = request.getParameter("do");
 //            out.print(service);
@@ -93,23 +97,25 @@ public class LoginController extends HttpServlet {
                         response.addCookie(passcookie);
                     }
                     if (a.getRole() == 0) {
-                            EmployeeDAO daoem = new EmployeeDAO();
-                int n=0;
-                Employees e = daoem.getEmpployeesbyUsername(a.getUsername());
+                        EmployeeDAO daoem = new EmployeeDAO();
+                        int n = 0;
+                        Employees e = daoem.getEmpployeesbyUsername(a.getUsername());
                         session.setAttribute("account", a);
+                        session.setAttribute("role2", a.getRole());
                         session.setAttribute("nameacc", a.getUsername());
-                            session.setAttribute("emp", e);
+                        session.setAttribute("emp", e);
+                        session.setAttribute("ROLE", "EMPLOYEES");
 //               
-                     response.sendRedirect("HomePageEmployeeController");
+                        response.sendRedirect("HomePageEmployeeController");
                     } else if (a.getRole() == 1) {
-                            EmployeeDAO daoem = new EmployeeDAO();
-                int n=0;
-                Employees e = daoem.getEmpployeesbyUsername(a.getUsername());
+                        EmployeeDAO daoem = new EmployeeDAO();
+                        Employees e = daoem.getEmpployeesbyUsername(a.getUsername());
                         // update login with role admin and customer
-                        session.setAttribute("USER", a.getUsername());
+                        session.setAttribute("USER", e.getEmployeeName());
                         session.setAttribute("EMAIL", a.getEmail());
-                        session.setAttribute("ROLE","ADMIN");
-                               session.setAttribute("account", a);
+                        session.setAttribute("ROLE", "ADMIN");
+                               session.setAttribute("role2", a.getRole());
+                        session.setAttribute("account", a);
                         session.setAttribute("nameacc", a.getUsername());
                         url = Define.INDEX_PAGE;
 
@@ -122,18 +128,22 @@ public class LoginController extends HttpServlet {
                         categoryDAO categoryDAO = new categoryDAO();
                         List<Category> listCategory = categoryDAO.getAllCategory();
                         request.setAttribute("LIST_CATEGORY", listCategory);
-                            session.setAttribute("emp", e);
-                          request.getRequestDispatcher(url).forward(request, response);
-                          
-                    }  else if (a.getRole() == 3) {
+                        session.setAttribute("emp", e);
+                        request.getRequestDispatcher(url).forward(request, response);
+
+                    } else if (a.getRole() == 3) {
+                        CustomerDAO daocus = new CustomerDAO();
+                        Customer cus = daocus.getCustomerbyid2(a.getUsername());
                         // update login with role admin and customer
-                        session.setAttribute("USER", a.getUsername());
+
+                        session.setAttribute("USER", cus.getCustomerName());
                         session.setAttribute("EMAIL", a.getEmail());
-                        session.setAttribute("ROLE","CUSTOMER");
-                               session.setAttribute("account", a);
+                        session.setAttribute("ROLE", "CUSTOMER");
+                               session.setAttribute("role2", a.getRole());
+                        session.setAttribute("account", a);
                         session.setAttribute("nameacc", a.getUsername());
                         url = Define.INDEX_PAGE;
-
+                        session.setAttribute("emp", cus);
                         //get all list product
                         ArrayList<ProductDTO> listProduct = new ArrayList<>();
                         ProductDAO productDAO = new ProductDAO();
@@ -144,8 +154,8 @@ public class LoginController extends HttpServlet {
                         List<Category> listCategory = categoryDAO.getAllCategory();
                         request.setAttribute("LIST_CATEGORY", listCategory);
 //                        session.setAttribute("emp", e);
-                          request.getRequestDispatcher(url).forward(request, response);
-                          
+                        request.getRequestDispatcher(url).forward(request, response);
+
                     }
                 }
             }
@@ -153,7 +163,7 @@ public class LoginController extends HttpServlet {
             session.setAttribute("ex", e);
             RequestDispatcher dispatcher2 = request.getRequestDispatcher("/page-error-500.html");
             dispatcher2.forward(request, response);
-        } 
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

@@ -6,11 +6,18 @@
 package Controller;
 
 import Define.Define;
+import Entity.Account;
 import Entity.Category;
+import Entity.Customer;
+import Entity.History;
 import Entity.OrderDTO;
 import Entity.ProductDTO;
+import Entity.Shippers;
+import Model.CustomerDAO;
 import Model.OrderDAO;
 import Model.ProductDAO;
+import Model.ProductInvoiceDAO;
+import Model.ShippersDAO;
 import Model.categoryDAO;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -26,7 +33,6 @@ import javax.servlet.http.HttpSession;
  *
  * @author duong
  */
-
 @WebServlet(name = "MainController", urlPatterns = {"/MainController"})
 @javax.servlet.annotation.MultipartConfig(
         fileSizeThreshold = 1024 * 1024,
@@ -73,10 +79,19 @@ public class MainController extends HttpServlet {
                 } else if (action.equals("Details Product")) {
                     url = Define.DETAILS_PRODUCT_CONTROLLER;
                 } else if (action.equals("Search History Product")) {
+//                    OrderDAO bookingDAO = new OrderDAO();
+//                    String user = (String) session.getAttribute("EMAIL");
+//                    ArrayList<OrderDTO> listOrder = new ArrayList<>();
+//                    listOrder = bookingDAO.getOrderHistory(user, "", "", "");
                     OrderDAO bookingDAO = new OrderDAO();
-                    String user = (String) session.getAttribute("EMAIL");
-                    ArrayList<OrderDTO> listOrder = new ArrayList<>();
-                    listOrder = bookingDAO.getOrderHistory(user, "", "", "");
+                    Object a = session.getAttribute("account");
+                    Account account = (Account) a;
+                    CustomerDAO daocus = new CustomerDAO();
+                    Customer cus = daocus.getCustomerbyid2(account.getUsername());
+                    ProductInvoiceDAO pdao = new ProductInvoiceDAO();
+                    ArrayList<History> listOrder = new ArrayList<>();
+
+                    listOrder = pdao.getOrderHistory(cus.getCustomerID(), "", "", "");
                     request.setAttribute("LIST_ORDER", listOrder);
                     url = Define.HISTORY_PAGE;
                 } else if (action.equals("Search Fill History Product")) {
@@ -94,6 +109,8 @@ public class MainController extends HttpServlet {
                     url = Define.CHECK_OUT_YOUR_CART_CONTROLLER;
                 } else if (action.equals("Display History Details")) {
                     url = Define.HISTORY_DETAILS_CONTROLLER;
+                }else if (action.equals("Login First")) {
+                    url = Define.SEARCH_PRODUCT_CONTROLLER;
                 }
             }
             //get all list product
@@ -101,10 +118,13 @@ public class MainController extends HttpServlet {
             ProductDAO productDAO = new ProductDAO();
             listProduct = productDAO.getProductByParam(Define.IS_EMPTY_DEFAUL, Define.NUMBER_DEFAUL);
             request.setAttribute("LIST_PRODUCT", listProduct);
+            ShippersDAO daoship = new ShippersDAO();
 
+            List<Shippers> list = daoship.listAllShippers();
+            request.setAttribute("LIST_SHIPPER", list);
             //get all type category
             categoryDAO categoryDAO = new categoryDAO();
-           List<Category> listCategory = categoryDAO.getAllCategory();
+            List<Category> listCategory = categoryDAO.getAllCategory();
             request.setAttribute("LIST_CATEGORY", listCategory);
         } catch (Exception e) {
             log("Error At MainController " + e.getLocalizedMessage());

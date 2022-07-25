@@ -106,7 +106,7 @@
                         </a>
                         <ul aria-expanded="false">
                             <li><a href="ListCustomer">List Customer</a></li>
-                            <li><a href="AddCustomer.jsp">Add Customer</a></li>
+                            <li><a href="AddCustomer">Add Customer</a></li>
                          
                         </ul>
                     </li>
@@ -116,7 +116,7 @@
                         </a>
                         <ul aria-expanded="false">
                             <li><a href="ListEmployees">List Employee</a></li>
-                            <li><a href="AddEmployee.jsp">Add Employee</a></li>
+                            <li><a href="AddEmployee">Add Employee</a></li>
                          
                         </ul>
                     </li>
@@ -126,7 +126,7 @@
                         </a>
                         <ul aria-expanded="false">
                             <li><a href="HomeController?do=ListShippers">List Shippers</a></li>
-                            <li><a href="HomeController?do=addShippers">Add Shippers</a></li>
+                            <li><a href="HomeController?do==AddShippers">Add Shippers</a></li>
                          
                         </ul>
                     </li>
@@ -141,7 +141,20 @@
                            <a href="HomeController?do=ListInvoice" aria-expanded="false">
                             <i class="icon-screen-tablet menu-icon"></i><span class="nav-text">Invoice Manager</span>
                         </a>
+
                     </li>
+                                 <li ${ROLE != 'ADMIN' ? 'style="display: none"':''}>
+<!--                        <a class="has-arrow" href="javascript:void()" aria-expanded="false">
+                            <i class="icon-screen-tablet menu-icon"></i><span class="nav-text">Invoice Manager</span>
+                        </a>
+                        <ul aria-expanded="false">
+                            <li><a href="./app-profile.html">Profile</a></li>
+                            <li><a href="./app-calender.html">Calender</a></li>
+                        </ul>-->
+                           <a href="ListDelivery" aria-expanded="false">
+                            <i class="icon-screen-tablet menu-icon"></i><span class="nav-text">Delivery</span>
+                           </a>
+                            
                     <li ${ROLE != 'ADMIN' ? 'style="display: none"':''}>
 <!--                        <a class="has-arrow" href="javascript:void()" aria-expanded="false">
                             <i class="icon-screen-tablet menu-icon"></i><span class="nav-text">Invoice Manager</span>
@@ -158,8 +171,7 @@
                             <li><a href="salarytotal">Employees Salary</a></li>
                          
                         </ul>
-                            
-                        </a>
+                  
                     </li>
                         <li  ${ROLE != 'ADMIN' ? 'style="display: none"':''}>
                          <a href="listcontact" aria-expanded="false">

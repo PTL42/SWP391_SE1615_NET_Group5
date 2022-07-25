@@ -31,6 +31,15 @@ String status;
         this.status = status;
     }
 
+    public Delivery(int invoiceId, String name, String phone, String address, int shipperId, String status) {
+        this.invoiceId = invoiceId;
+        this.name = name;
+        this.phone = phone;
+        this.address = address;
+        this.shipperId = shipperId;
+        this.status = status;
+    }
+
     public int getId() {
         return id;
     }

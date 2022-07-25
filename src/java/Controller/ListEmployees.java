@@ -5,7 +5,9 @@
  */
 package Controller;
 
+import Entity.Account;
 import Entity.Employees;
+import Model.AccountDAO;
 import Model.EmployeeDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -15,6 +17,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -36,14 +39,44 @@ public class ListEmployees extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-           
-          EmployeeDAO dao=new EmployeeDAO();
-          List<Employees> list =dao.getAllEmpployees();
+            HttpSession session = request.getSession();
+
+            String service = request.getParameter("do");
+
+            Object a = session.getAttribute("account");
+            Account account = (Account) a;
+            if (a != null && account.getRole() == 1) {
+//                Account account = (Account) a;
+                EmployeeDAO dao = new EmployeeDAO();
+                int n = 0;
+                Employees e = dao.getEmpployeesbyUsername(account.getUsername());
+             if (service == null) {
+                    service = "ListAll";
+                    n=1;
+                }
+             if(service.equals("ListAll")){
+                 List<Employees> list =dao.getAllEmpployees();
           request.setAttribute("ListP", list);
           request.getRequestDispatcher("ListEmployees.jsp").forward(request, response);
-        }
+             }
+             if(service.equals("DeleteEmployees")){
+                 AccountDAO daoacc =new AccountDAO();
+                 String id=request.getParameter("sid");
+                    dao.DeleteEmployee(id);
+                    Employees e1=dao.getEmpployeesbyID(id);
+                    daoacc.deleteacc(e1.getUsername());
+                    
+            request.setAttribute("add", 1);
+               List<Employees> list =dao.getAllEmpployees();
+          request.setAttribute("ListP", list);
+           request.getRequestDispatcher("ListEmployees.jsp").forward(request, response);
+             }
+       
+        }else{
+                response.sendRedirect("login.jsp");
+            }
     }
-
+    }
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.

@@ -248,10 +248,9 @@
                                 <div class="form-group">
                                     <label>Select Type</label>
                                     <select id="inputName" class="form-select" name="selectType" required aria-label="Disabled select example">
-                                        <option value="Express delivery" selected>Express delivery</option>
-                                        <option value="Ship Code">Ship Code</option>
-                                        <option value="Buy on site">Buy on site</option>
-                                        <option value="Deliver to home">Deliver to home</option>
+                                        <c:forEach items="${LIST_SHIPPER}" var="shipper">
+                                        <option value="${shipper.shipperID}" selected>${shipper.companyName}</option>
+                                        </c:forEach>
                                     </select>
                                 </div>
                                 <div class="modal-footer">

@@ -1,5 +1,4 @@
 
-<%@page import="java.time.LocalDate"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -18,15 +17,41 @@
     </head>
 
     <body>
-<%@include file="vip/Panner.jsp" %>
 
-       <div ${ROLE == 'ADMIN' ? '':'style="display: none"'}>
+        <!--*******************
+            Preloader start
+        ********************-->
+         <%@include file="vip/Panner.jsp" %>
+            
+        <!--**********************************
+            Header end ti-comment-alt
+        ***********************************-->
+
+        <!--**********************************
+            Sidebar start
+        ***********************************-->
+
+          <div ${ROLE == 'ADMIN' ? '':'style="display: none"'}>
             <%@include file="vip/function.jsp" %>
         </div>
         <div ${ROLE == 'EMPLOYEES' ? '':'style="display: none"'}>
             <%@include file="vip/functionemp.jsp" %>
         </div>
- 
+            <!--**********************************
+                Header end ti-comment-alt
+            ***********************************-->
+
+            <!--**********************************
+                Sidebar start
+            ***********************************-->
+
+            <!--**********************************
+                Sidebar end
+            ***********************************-->
+
+            <!--**********************************
+                Content body start
+            ***********************************-->
             <div class="content-body">
 
                 <div class="row page-titles mx-0">
@@ -40,88 +65,77 @@
                 <!-- row -->
 
                 <div class="container-fluid">
-                    <div class="row justify-content-center">
-                         <c:if test="${not empty add}">
+                       <c:if test="${not empty dele}">
                         <div class="alert alert-primary alert-dismissible fade show" role="alert">
-                            <strong>Note:</strong> <span font-weight-semi-bold text-capitalize style="color: black">ADD SUCCESS</span>
+                            <strong>Note:</strong> <span font-weight-semi-bold text-capitalize style="color: black">UPDATE SUCCESS</span>
                             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
                     </c:if>
+                    <div class="row justify-content-center">
                         <div class="col-lg-12">
                             <div class="card">
                                 <div class="card-body">
                                     <div class="form-validation">
-                                        <form class="form-valide" action="AddEmployee" method="post">
-
+                                        <form class="form-valide" action="UpdateCustomer1" method="post">
+                                            <div class="form-group row">
+                                                <label class="col-lg-4 col-form-label" for="val-username"> ID <span class="text-danger">*</span>
+                                                </label>
+                                                <div class="col-lg-6">
+                                                    <input type="text" value="${pr.customerID}" class="form-control" id="val-username" name="prID" readonly >
+                                                </div>
+                                            </div>
                                             <div class="form-group row">
                                                 <label class="col-lg-4 col-form-label" for="val-email"> Name <span class="text-danger">*</span>
                                                 </label>
                                                 <div class="col-lg-6">
-                                                    <input type="text" maxlength="30" class="form-control" id="val-email" name="name"  required="Mustinput">
+                                                    <input type="text" maxlength="30" value="${pr.customerName}" class="form-control" id="val-email" name="prName" required="">
                                                 </div>
                                             </div>
                                             <div class="form-group row">
-                                                <label class="col-lg-4 col-form-label" for="val-password"> Gender <span class="text-danger">*</span>
+                                                <label class="col-lg-4 col-form-label" for="val-password"> Address <span class="text-danger">*</span>
                                                 </label>
                                                 <div class="col-lg-6">
-                                                    <input type="radio" maxlength="99" value="1" name="gender" required="">Male
-                                                    <input type="radio" maxlength="99" value="0" name="gender" required="">Female
+                                                    <input type="text" maxlength="99" value="${pr.adress}" class="form-control" id="val-password" name="prAddress" required="">
                                                 </div>
                                             </div>
                                             <div class="form-group row">
                                                 <label class="col-lg-4 col-form-label" for="val-confirm-password"> Phone <span class="text-danger">*</span>
                                                 </label>
                                                 <div class="col-lg-6">
-                                                    <input type="text"  maxlength="99" class="form-control" id="val-confirm-password" name="phone" required="" >
+                                                    <input type="text" maxlength="99" value="${pr.phone}" class="form-control" id="val-confirm-password" name="phone" required="">
                                                 </div>
                                             </div>
 
                                             <div class="form-group row">
-                                                <label class="col-lg-4 col-form-label" for="val-currency">Birthday <span class="text-danger">*</span>
+                                                <label class="col-lg-4 col-form-label" for="val-currency">Image <span class="text-danger">*</span>
                                                 </label>
                                                 <div class="col-lg-6">
-<!--                                                    <input type="datetime"  maxlength="199" class="form-control" id="val-currency" name="dob" required="">-->
-                                                      <input class="form-control" type="date"  name="dob"
-                                                                       min="<%= LocalDate.now().minusYears(2)%> " max="<%= LocalDate.now()%>">
+                                                    <input type="text" maxlength="199" value="${pr.img}" class="form-control" id="val-currency" name="Image" required="">
                                                 </div>
                                             </div>
                                             <div class="form-group row">
-                                                <label class="col-lg-4 col-form-label" for="val-website"> Image <span class="text-danger">*</span>
+                                                <label class="col-lg-4 col-form-label" for="val-website"> Username <span class="text-danger">*</span>
                                                 </label>
                                                 <div class="col-lg-6">
-                                                    <input type="text" maxlength="99" class="form-control" id="val-website" name="img" required="">
+                                                    <input type="text" maxlength="99" value="${pr.username}" class="form-control" id="val-website" name="username" required="">
                                                 </div>
                                             </div>
                                             <div class="form-group row">
-                                                <label class="col-lg-4 col-form-label" for="val-phoneus"> Username <span class="text-danger">*</span>
+                                                <label class="col-lg-4 col-form-label" for="val-phoneus"> Gmail <span class="text-danger">*</span>
                                                 </label>
                                                 <div class="col-lg-6">
-                                                    <input type="text" maxlength="99"  class="form-control" id="val-phoneus" name="username" required="">
-                                                </div>
-                                            </div>
-                                            <div class="form-group row">
-                                                <label class="col-lg-4 col-form-label" for="val-phoneus"> Password <span class="text-danger">*</span>
-                                                </label>
-                                                <div class="col-lg-6">
-                                                    <input type="text" maxlength="99"  class="form-control" id="val-phoneus" name="pass" required="">
-                                                </div>
-                                            </div>
-                                            <div class="form-group row">
-                                                <label class="col-lg-4 col-form-label" for="val-phoneus"> Mail <span class="text-danger">*</span>
-                                                </label>
-                                                <div class="col-lg-6">
-                                                    <input type="text" maxlength="99"  class="form-control" id="val-phoneus" name="email" required="">
+                                                    <input type="text" maxlength="99" value="${pr.email}" class="form-control" id="val-phoneus" name="email" required="">
                                                 </div>
                                             </div>
 
 
                                             <div class="form-group row">
                                                 <div class="col-lg-8 ml-auto">
-                                                       <button type="submit" name="submit"  class="btn btn-primary" id="toastr-success-top-right">Submit</button>
+                                                    <button type="summit" class="btn btn-primary" onclick="return confirm('Are You Sure')">Update</button>
+                                                    
                                                 </div>
                                             </div>
-                                          
-
+                                        
                                         </form>
                                     </div>
                                 </div>
