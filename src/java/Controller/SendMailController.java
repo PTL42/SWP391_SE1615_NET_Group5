@@ -43,7 +43,7 @@ public class SendMailController extends HttpServlet {
            String subject = "Your order has been processing.";
               ContactUs a=dao.getContactbyid(id);
         String message = "Hello " +a.getName()+request.getParameter("messsent");
-        boolean k= SendMail.send2(a.getEmail(), subject, message, "lunthe150983@fpt.edu.vn", "vipVip88888888");
+        boolean k= SendMail.send2(a.getEmail(), subject, message, "", "");
         if(k==true){
             dao.UpdatestatusContact(1, id);
             request.setAttribute("note", "Sent message to email:"+a.getEmail());
